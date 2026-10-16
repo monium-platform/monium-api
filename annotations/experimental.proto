@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package monium.api;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/monium/api";
+option java_multiple_files = true;
+option java_outer_classname = "ExperimentalProto";
+option java_package = "monium.api";
+
+extend google.protobuf.ServiceOptions {
+  // Marks a service as experimental and subject to incompatible changes.
+  // Applies only to the annotated service; its methods and referenced messages
+  // must be annotated separately.
+  bool service_experimental = 82218;
+}
+
+extend google.protobuf.MethodOptions {
+  // Marks an RPC method as experimental and subject to incompatible changes.
+  // Applies only to the annotated method; its request and response messages
+  // must be annotated separately.
+  bool method_experimental = 82219;
+}
+
+extend google.protobuf.MessageOptions {
+  // Marks a message as experimental and subject to incompatible changes.
+  // Applies only to the annotated message; its fields and nested message types
+  // must be annotated separately.
+  bool message_experimental = 82220;
+}
+
+extend google.protobuf.FieldOptions {
+  // Marks a field as experimental and subject to incompatible changes.
+  // Applies only to the annotated field and does not affect its containing
+  // message.
+  bool field_experimental = 82221;
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "SortOrderProto";
+option java_package = "monium.api.v4";
+
+// Specifies the direction in which results are sorted.
+enum SortOrder {
+  SORT_ORDER_UNSPECIFIED = 0;
+  SORT_ORDER_ASC = 1;
+  SORT_ORDER_DESC = 2;
+}

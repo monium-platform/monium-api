@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "v4/common/enums/sort_order.proto";
+import "v4/logs/logs_search/resources/log_entry.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "LogsSearchServiceProto";
+option java_package = "monium.api.v4";
+
+// Searches log entries.
+service LogsSearchService {
+  // Returns log entries that match the specified queries and time interval.
+  rpc SearchLogs(SearchLogsRequest) returns (SearchLogsResponse);
+}
+
+message SearchLogsRequest {
+  // Specifies the inclusive start of the search interval.
+  google.protobuf.Timestamp start_time = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Specifies the exclusive end of the search interval.
+  google.protobuf.Timestamp end_time = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Log queries in Monium selector syntax, for example,
+  // `{project="my-project", service="my-service"}`. Log entries match the
+  // queries using OR. The list must contain 1 to 10 queries.
+  repeated string queries = 3 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // Defaults to `SORT_ORDER_DESC`.
+  SortOrder order = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  // Defaults to 100. The maximum allowed value is 10,000.
+  int32 page_size = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  string page_token = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message SearchLogsResponse {
+  repeated LogEntry logs = 1;
+  // Token for retrieving the next page. When iterating through pages, use this
+  // token rather than an empty logs list to determine whether more results remain.
+  // An empty token means that there are no more results.
+  string next_page_token = 2;
+}

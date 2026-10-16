@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "LogLevelProto";
+option java_package = "monium.api.v4";
+
+// Specifies the severity level of a log entry.
+// Additional values may be added in future versions.
+enum LogLevel {
+  LOG_LEVEL_UNSPECIFIED = 0;
+  LOG_LEVEL_TRACE = 1;
+  LOG_LEVEL_DEBUG = 2;
+  LOG_LEVEL_INFO = 3;
+  LOG_LEVEL_WARN = 4;
+  LOG_LEVEL_ERROR = 5;
+  LOG_LEVEL_FATAL = 6;
+}

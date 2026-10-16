@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package monium.api;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/monium/api";
+option java_multiple_files = true;
+option java_outer_classname = "OperationInfoProto";
+option java_package = "monium.api";
+
+// Identifies the concrete messages packed into an asynchronous operation.
+message OperationInfo {
+  // Names the message packed into the operation metadata. Required when this option is present.
+  string metadata = 1;
+
+  // Names the message packed into the successful operation response. Required when this option is present.
+  string response = 2;
+}
+
+extend google.protobuf.MethodOptions {
+  // Describes the result types of an RPC that returns a long-running operation.
+  OperationInfo operation_info = 87335;
+}
