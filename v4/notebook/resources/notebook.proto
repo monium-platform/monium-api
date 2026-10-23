@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/common/resource_audit.proto";
+import "v4/common/resource_management.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "NotebookProto";
+option java_package = "monium.api.v4";
+
+message Notebook {
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string project_id = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string name = 3 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string description = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  map<string, string> labels = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string etag = 6;
+
+  ResourceManagement resource_management = 7;
+
+  string markup = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  NotebookTimeline timeline = 9 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ResourceAudit resource_audit = 1000 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}
+
+message NotebookTimeline {
+  // Specifies the window start as `now`, `now` with an offset such as `now-1d`, or an ISO 8601 timestamp with a UTC offset, for example `2025-11-27T04:11:38Z`.
+  string from = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Uses the same format as `from`, for example `now` or `2025-11-28T04:11:38+03:00`.
+  string to = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Specifies the refresh period in milliseconds; `0` disables refresh, other values must be at least `10000`.
+  optional int64 refresh_interval = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

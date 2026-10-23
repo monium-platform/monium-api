@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ResourceAuditProto";
+option java_package = "monium.api.v4";
+
+message ResourceAudit {
+  string created_by = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+
+  google.protobuf.Timestamp create_time = 2 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+
+  string updated_by = 3 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+
+  google.protobuf.Timestamp update_time = 4 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}

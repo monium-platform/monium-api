@@ -1,0 +1,210 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "v4/notebook/resources/notebook.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "NotebookServiceProto";
+option java_package = "monium.api.v4";
+
+service NotebookService {
+  rpc GetNotebook(GetNotebookRequest) returns (Notebook) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/notebooks/{id}"
+    };
+    option (google.api.method_signature) = "project_id,id";
+  }
+
+  rpc ListNotebooks(ListNotebooksRequest) returns (ListNotebooksResponse) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/notebooks"
+    };
+    option (google.api.method_signature) = "project_id";
+  }
+
+  rpc CreateNotebook(CreateNotebookRequest) returns (Notebook) {
+    option (google.api.http) = {
+      post: "/api/v4/projects/{project_id}/notebooks"
+      body: "notebook"
+    };
+    option (google.api.method_signature) = "project_id,notebook";
+  }
+
+  rpc UpdateNotebook(UpdateNotebookRequest) returns (Notebook) {
+    option (google.api.http) = {
+      patch: "/api/v4/projects/{notebook.project_id}/notebooks/{notebook.id}"
+      body: "notebook"
+    };
+    option (google.api.method_signature) = "notebook,update_mask";
+  }
+
+  rpc DeleteNotebook(DeleteNotebookRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v4/projects/{project_id}/notebooks/{id}"
+    };
+    option (google.api.method_signature) = "project_id,id";
+  }
+
+  rpc SuggestNotebookLabelNames(SuggestNotebookLabelNamesRequest) returns (SuggestNotebookLabelNamesResponse) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/notebook:suggestNotebookLabelNames"
+    };
+  }
+
+  rpc SuggestNotebookLabelValues(SuggestNotebookLabelValuesRequest) returns (SuggestNotebookLabelValuesResponse) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/notebook:suggestNotebookLabelValues"
+    };
+  }
+}
+
+message GetNotebookRequest {
+  string id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string project_id = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message ListNotebooksRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Defaults to `100` when omitted or zero; values above `1000` are capped at `1000`.
+  int32 page_size = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Uses `next_page_token` from the previous response; empty selects the first page.
+  string page_token = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Uses the Monium selector syntax: comma-separated `FIELD PREDICATE VALUE` expressions that must all match.
+  // Matches notebook fields, for example `name = "prod-*"` or `id == "notebook-id"`, and labels such as `labels.team = "api"`.
+  // Supports glob and regular-expression predicates.
+  // (-- See [selector syntax](https://docs.yandex-team.ru/logs/query/selectors#selector). --)
+  string selector = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  google.protobuf.FieldMask read_mask = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListNotebooksResponse {
+  repeated Notebook notebooks = 1;
+
+  // Is empty when there are no more notebooks to return.
+  string next_page_token = 2;
+}
+
+message CreateNotebookRequest {
+  Notebook notebook = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string project_id = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message UpdateNotebookRequest {
+  Notebook notebook = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  google.protobuf.FieldMask update_mask = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message DeleteNotebookRequest {
+  string id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string etag = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string project_id = 3 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message SuggestNotebookLabelNamesRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Matches label names containing this substring.
+  string text = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Uses the same notebook selector syntax as `ListNotebooksRequest.selector`.
+  string selector = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  int64 page_size = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  google.protobuf.FieldMask read_mask = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message SuggestNotebookLabelNamesResponse {
+  repeated string label_names = 1;
+
+  bool truncated = 2;
+}
+
+message SuggestNotebookLabelValuesRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Uses the same notebook selector syntax as `ListNotebooksRequest.selector`.
+  string selector = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Selects a label by its exact name.
+  string label_name = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Matches label values containing this substring.
+  string text = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  int64 page_size = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  google.protobuf.FieldMask read_mask = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message SuggestNotebookLabelValuesResponse {
+  repeated string label_values = 1;
+
+  bool truncated = 2;
+}

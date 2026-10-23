@@ -3,7 +3,7 @@ syntax = "proto3";
 package monium.api.v4;
 
 import "v4/common/labels.proto";
-import "v4/logs/common/log_level.proto";
+import "v4/logs/enums/log_level.proto";
 
 option go_package = "github.com/monium/api/v4";
 option java_multiple_files = true;
@@ -31,5 +31,11 @@ message LogEntry {
 // Contains parallel arrays of log metadata keys and values.
 message Meta {
   repeated string keys = 1;
-  repeated string values = 2;
+  repeated MetaValue values = 2;
+}
+
+message MetaValue {
+  oneof kind {
+    string string_value = 1;
+  }
 }

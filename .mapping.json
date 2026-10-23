@@ -1,0 +1,13 @@
+{
+  "annotations/experimental.proto":"monium/api/annotations/experimental.proto",
+  "annotations/operation_info.proto":"monium/api/annotations/operation_info.proto",
+  "v4/common/enums/sort_order.proto":"monium/api/v4/common/enums/sort_order.proto",
+  "v4/common/labels.proto":"monium/api/v4/common/labels.proto",
+  "v4/common/resource_audit.proto":"monium/api/v4/common/resource_audit.proto",
+  "v4/common/resource_management.proto":"monium/api/v4/common/resource_management.proto",
+  "v4/logs/enums/log_level.proto":"monium/api/v4/logs/enums/log_level.proto",
+  "v4/logs/logs_search/logs_search_service.proto":"monium/api/v4/logs/logs_search/logs_search_service.proto",
+  "v4/logs/logs_search/resources/log_entry.proto":"monium/api/v4/logs/logs_search/resources/log_entry.proto",
+  "v4/notebook/notebook_service.proto":"monium/api/v4/notebook/notebook_service.proto",
+  "v4/notebook/resources/notebook.proto":"monium/api/v4/notebook/resources/notebook.proto"
+}
