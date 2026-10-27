@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+import "google/rpc/status.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "OperationProto";
+option java_package = "monium.api.v4";
+
+// Represents the state and result of an asynchronous API request.
+message Operation {
+  // Identifies the operation returned by an asynchronous API request.
+  string id = 1;
+
+  // Describes the operation in human-readable form.
+  string description = 2;
+
+  // Records when the operation was created.
+  google.protobuf.Timestamp create_time = 3;
+
+  // Identifies who created the operation.
+  string created_by = 4;
+
+  // Records when the operation was last updated.
+  google.protobuf.Timestamp update_time = 5;
+
+  // Indicates whether the operation has finished.
+  bool done = 6;
+
+  // Contains service-specific metadata associated with the operation.
+  google.protobuf.Any metadata = 7;
+
+  oneof result {
+    // Contains the error that caused the operation to fail or be canceled.
+    google.rpc.Status error = 8;
+
+    // Contains the result of a successful operation.
+    // For create and update operations, contains the created or updated resource.
+    google.protobuf.Any response = 9;
+  }
+}

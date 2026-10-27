@@ -9,5 +9,7 @@
   "v4/logs/logs_search/logs_search_service.proto":"monium/api/v4/logs/logs_search/logs_search_service.proto",
   "v4/logs/logs_search/resources/log_entry.proto":"monium/api/v4/logs/logs_search/resources/log_entry.proto",
   "v4/notebook/notebook_service.proto":"monium/api/v4/notebook/notebook_service.proto",
-  "v4/notebook/resources/notebook.proto":"monium/api/v4/notebook/resources/notebook.proto"
+  "v4/notebook/resources/notebook.proto":"monium/api/v4/notebook/resources/notebook.proto",
+  "v4/operation/operation_service.proto":"monium/api/v4/operation/operation_service.proto",
+  "v4/operation/resources/operation.proto":"monium/api/v4/operation/resources/operation.proto"
 }

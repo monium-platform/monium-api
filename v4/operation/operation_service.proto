@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "v4/operation/resources/operation.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "OperationServiceProto";
+option java_package = "monium.api.v4";
+
+service OperationService {
+  rpc GetOperationLongRunning(GetOperationLongRunningRequest) returns (Operation) {
+    option (google.api.http) = {
+      get: "/api/v4/operations/{id}"
+    };
+    option (google.api.method_signature) = "id";
+  }
+}
+
+message GetOperationLongRunningRequest {
+  // Identifies the operation to return.
+  string id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
