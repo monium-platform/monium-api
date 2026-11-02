@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartSeriesVisualizationTypeProto";
+option java_package = "monium.api.v4";
+
+enum ChartSeriesVisualizationType {
+  // Uses line visualization by default.
+  CHART_SERIES_VISUALIZATION_TYPE_UNSPECIFIED = 0;
+
+  CHART_SERIES_VISUALIZATION_TYPE_LINE = 1;
+
+  CHART_SERIES_VISUALIZATION_TYPE_STACK = 2;
+
+  // Displays points as columns.
+  CHART_SERIES_VISUALIZATION_TYPE_COLUMN = 3;
+
+  CHART_SERIES_VISUALIZATION_TYPE_POINTS = 4;
+}

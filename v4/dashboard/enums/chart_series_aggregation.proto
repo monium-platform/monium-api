@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartSeriesAggregationProto";
+option java_package = "monium.api.v4";
+
+enum ChartSeriesAggregation {
+  // Uses averaging by default.
+  CHART_SERIES_AGGREGATION_UNSPECIFIED = 0;
+
+  CHART_SERIES_AGGREGATION_AVG = 1;
+
+  CHART_SERIES_AGGREGATION_MIN = 2;
+
+  CHART_SERIES_AGGREGATION_MAX = 3;
+
+  CHART_SERIES_AGGREGATION_LAST = 4;
+
+  CHART_SERIES_AGGREGATION_SUM = 5;
+}

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "EvaluationStatusProto";
+option java_package = "monium.api.v4";
+
+enum EvaluationStatus {
+  EVALUATION_STATUS_UNSPECIFIED = 0;
+
+  EVALUATION_STATUS_OK = 1;
+
+  EVALUATION_STATUS_WARN = 2;
+
+  EVALUATION_STATUS_ALARM = 3;
+
+  EVALUATION_STATUS_NO_DATA = 4;
+
+  EVALUATION_STATUS_ERROR = 5;
+}

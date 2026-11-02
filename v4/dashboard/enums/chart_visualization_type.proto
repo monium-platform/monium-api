@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartVisualizationTypeProto";
+option java_package = "monium.api.v4";
+
+enum ChartVisualizationType {
+  // Uses line visualization by default.
+  CHART_VISUALIZATION_TYPE_UNSPECIFIED = 0;
+
+  CHART_VISUALIZATION_TYPE_LINE = 1;
+
+  CHART_VISUALIZATION_TYPE_STACK = 2;
+
+  // Displays points as columns.
+  CHART_VISUALIZATION_TYPE_COLUMN = 3;
+
+  CHART_VISUALIZATION_TYPE_POINTS = 4;
+
+  // Aggregates series into a pie chart.
+  CHART_VISUALIZATION_TYPE_PIE = 5;
+
+  // Aggregates series into a bar chart.
+  CHART_VISUALIZATION_TYPE_BARS = 6;
+
+  // Aggregates series into a distribution chart.
+  CHART_VISUALIZATION_TYPE_DISTRIBUTION = 7;
+
+  // Aggregates series into a heatmap.
+  CHART_VISUALIZATION_TYPE_HEATMAP = 8;
+
+  // Aggregates series into tiles.
+  CHART_VISUALIZATION_TYPE_TILES = 9;
+}

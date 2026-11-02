@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/common/infra_event_sources.proto";
+import "v4/dashboard/enums/chart_freeze_duration.proto";
+import "v4/dashboard/resources/chart_settings.proto";
+import "v4/dashboard/resources/legend_settings.proto";
+import "v4/dashboard/resources/overlay.proto";
+import "v4/dashboard/resources/thresholds.proto";
+import "v4/metrics/data/resources/downsampling.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartWidgetProto";
+option java_package = "monium.api.v4";
+
+message ChartWidget {
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartWidgetQueries queries = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartVisualizationSettings visualization_settings = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated ChartSeriesOverrides series_overrides = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartNameHidingSettings name_hiding_settings = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // (-- Is not enabled in the UI. --)
+  string description = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string title = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool display_legend = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Fixes the chart time interval.
+  ChartFreezeDuration freeze = 9 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Configures repeated panels or rows.
+  ChartRepeatSettings repeat = 10 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  Thresholds thresholds = 11 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Loads infrastructure events in the UI.
+  InfraEventSources event_sources = 12 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated Overlay overlays = 13 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  LegendSettings legend_settings = 14 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartWidgetQueries {
+  repeated ChartWidgetQueriesTarget targets = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  Downsampling downsampling = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartWidgetQueriesTarget {
+  string query = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool text_mode = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool hidden = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string name = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

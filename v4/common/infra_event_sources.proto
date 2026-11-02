@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/common/enums/infra_type.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "InfraEventSourcesProto";
+option java_package = "monium.api.v4";
+
+message InfraSource {
+  int64 service_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  int64 environment_id = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Selects all event types for an empty list or [INFRA_TYPE_UNSPECIFIED][InfraType.INFRA_TYPE_UNSPECIFIED].
+  repeated InfraType types = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Accepts a display title, such as `All my deploy events`.
+  string title = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool hide_by_default = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  optional string service_selector = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  optional string environment_selector = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message InfraEventSources {
+  repeated InfraSource infra = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/dashboard/enums/thresholds_show_mode.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ThresholdsProto";
+option java_package = "monium.api.v4";
+
+message Thresholds {
+  repeated ThresholdsItem items = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ThresholdsShowMode show_mode = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+message ThresholdsItem {
+  // Accepts a hexadecimal color.
+  string color = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  optional double value = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

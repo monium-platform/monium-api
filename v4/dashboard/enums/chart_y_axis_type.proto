@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartYAxisTypeProto";
+option java_package = "monium.api.v4";
+
+enum ChartYAxisType {
+  // Uses a linear axis by default.
+  CHART_Y_AXIS_TYPE_UNSPECIFIED = 0;
+
+  CHART_Y_AXIS_TYPE_LINEAR = 1;
+
+  CHART_Y_AXIS_TYPE_LOGARITHMIC = 2;
+}

@@ -1,0 +1,326 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "UnitFormatProto";
+option java_package = "monium.api.v4";
+
+enum UnitFormat {
+  UNIT_FORMAT_UNSPECIFIED = 0;
+
+  // Displays tick values without formatting.
+  UNIT_FORMAT_UNIT_NONE = 1;
+
+  UNIT_FORMAT_UNIT_COUNT = 2;
+
+  // Expresses percentages on a scale from `0` to `100`.
+  UNIT_FORMAT_UNIT_PERCENT = 3;
+
+  // Expresses percentages on a scale from `0` to `1`.
+  UNIT_FORMAT_UNIT_PERCENT_UNIT = 4;
+
+  // Expresses values in nanoseconds (`ns`).
+  UNIT_FORMAT_UNIT_NANOSECONDS = 5;
+
+  // Expresses values in microseconds (`µs`).
+  UNIT_FORMAT_UNIT_MICROSECONDS = 6;
+
+  // Expresses values in milliseconds (`ms`).
+  UNIT_FORMAT_UNIT_MILLISECONDS = 7;
+
+  // Expresses values in seconds (`s`).
+  UNIT_FORMAT_UNIT_SECONDS = 8;
+
+  // Expresses values in minutes (`m`).
+  UNIT_FORMAT_UNIT_MINUTES = 9;
+
+  // Expresses values in hours (`h`).
+  UNIT_FORMAT_UNIT_HOURS = 10;
+
+  // Expresses values in days (`d`).
+  UNIT_FORMAT_UNIT_DAYS = 11;
+
+  UNIT_FORMAT_UNIT_BITS_SI = 12;
+
+  UNIT_FORMAT_UNIT_BYTES_SI = 13;
+
+  // Expresses values in kilobytes (`KB`).
+  UNIT_FORMAT_UNIT_KILOBYTES = 14;
+
+  // Expresses values in megabytes (`MB`).
+  UNIT_FORMAT_UNIT_MEGABYTES = 15;
+
+  // Expresses values in gigabytes (`GB`).
+  UNIT_FORMAT_UNIT_GIGABYTES = 16;
+
+  // Expresses values in terabytes (`TB`).
+  UNIT_FORMAT_UNIT_TERABYTES = 17;
+
+  // Expresses values in petabytes (`PB`).
+  UNIT_FORMAT_UNIT_PETABYTES = 18;
+
+  // Expresses values in exabytes (`EB`).
+  UNIT_FORMAT_UNIT_EXABYTES = 19;
+
+  UNIT_FORMAT_UNIT_BITS_IEC = 20;
+
+  UNIT_FORMAT_UNIT_BYTES_IEC = 21;
+
+  // Expresses values in kibibytes (`KiB`).
+  UNIT_FORMAT_UNIT_KIBIBYTES = 22;
+
+  // Expresses values in mebibytes (`MiB`).
+  UNIT_FORMAT_UNIT_MEBIBYTES = 23;
+
+  // Expresses values in gibibytes (`GiB`).
+  UNIT_FORMAT_UNIT_GIBIBYTES = 24;
+
+  // Expresses values in tebibytes (`TiB`).
+  UNIT_FORMAT_UNIT_TEBIBYTES = 25;
+
+  // Expresses values in pebibytes (`PiB`).
+  UNIT_FORMAT_UNIT_PEBIBYTES = 26;
+
+  // Expresses values in exbibytes (`EiB`).
+  UNIT_FORMAT_UNIT_EXBIBYTES = 27;
+
+  // Expresses values in requests per second (`reqps`).
+  UNIT_FORMAT_UNIT_REQUESTS_PER_SECOND = 28;
+
+  // Expresses values in operations per second (`ops`).
+  UNIT_FORMAT_UNIT_OPERATIONS_PER_SECOND = 29;
+
+  // Expresses values in writes per second (`wps`).
+  UNIT_FORMAT_UNIT_WRITES_PER_SECOND = 30;
+
+  // Expresses values in reads per second (`rps`).
+  UNIT_FORMAT_UNIT_READS_PER_SECOND = 31;
+
+  // Expresses values in packets per second (`pps`).
+  UNIT_FORMAT_UNIT_PACKETS_PER_SECOND = 32;
+
+  // Expresses values in I/O operations per second (`iops`).
+  UNIT_FORMAT_UNIT_IO_OPERATIONS_PER_SECOND = 33;
+
+  // Expresses values in counts per second (`counts/sec`).
+  UNIT_FORMAT_UNIT_COUNTS_PER_SECOND = 34;
+
+  // Expresses values in bits (SI) per second (`bits/sec`).
+  UNIT_FORMAT_UNIT_BITS_SI_PER_SECOND = 35;
+
+  // Expresses values in bytes (SI) per second (`bytes/sec`).
+  UNIT_FORMAT_UNIT_BYTES_SI_PER_SECOND = 36;
+
+  // Expresses values in kilobits per second (`KBits/sec`).
+  UNIT_FORMAT_UNIT_KILOBITS_PER_SECOND = 37;
+
+  // Expresses values in kilobytes per second (`KB/sec`).
+  UNIT_FORMAT_UNIT_KILOBYTES_PER_SECOND = 38;
+
+  // Expresses values in megabits per second (`MBits/sec`).
+  UNIT_FORMAT_UNIT_MEGABITS_PER_SECOND = 39;
+
+  // Expresses values in megabytes per second (`MB/sec`).
+  UNIT_FORMAT_UNIT_MEGABYTES_PER_SECOND = 40;
+
+  // Expresses values in gigabits per second (`GBits/sec`).
+  UNIT_FORMAT_UNIT_GIGABITS_PER_SECOND = 41;
+
+  // Expresses values in gigabytes per second (`GB/sec`).
+  UNIT_FORMAT_UNIT_GIGABYTES_PER_SECOND = 42;
+
+  // Expresses values in terabits per second (`TBits/sec`).
+  UNIT_FORMAT_UNIT_TERABITS_PER_SECOND = 43;
+
+  // Expresses values in terabytes per second (`TB/sec`).
+  UNIT_FORMAT_UNIT_TERABYTES_PER_SECOND = 44;
+
+  // Expresses values in petabits per second (`Pbits/sec`).
+  UNIT_FORMAT_UNIT_PETABITS_PER_SECOND = 45;
+
+  // Expresses values in petabytes per second (`PB/sec`).
+  UNIT_FORMAT_UNIT_PETABYTES_PER_SECOND = 46;
+
+  // Expresses values in bits (IEC) per second (`bits/sec`).
+  UNIT_FORMAT_UNIT_BITS_IEC_PER_SECOND = 47;
+
+  // Expresses values in bytes (IEC) per second (`bytes/sec`).
+  UNIT_FORMAT_UNIT_BYTES_IEC_PER_SECOND = 48;
+
+  // Expresses values in kibibits per second (`KiBits/sec`).
+  UNIT_FORMAT_UNIT_KIBIBITS_PER_SECOND = 49;
+
+  // Expresses values in kibibytes per second (`KiB/sec`).
+  UNIT_FORMAT_UNIT_KIBIBYTES_PER_SECOND = 50;
+
+  // Expresses values in mebibits per second (`MiBits/sec`).
+  UNIT_FORMAT_UNIT_MEBIBITS_PER_SECOND = 51;
+
+  // Expresses values in mebibytes per second (`MiB/sec`).
+  UNIT_FORMAT_UNIT_MEBIBYTES_PER_SECOND = 52;
+
+  // Expresses values in gibibits per second (`GiBits/sec`).
+  UNIT_FORMAT_UNIT_GIBIBITS_PER_SECOND = 53;
+
+  // Expresses values in gibibytes per second (`GiB/sec`).
+  UNIT_FORMAT_UNIT_GIBIBYTES_PER_SECOND = 54;
+
+  // Expresses values in tebibits per second (`TiBits/sec`).
+  UNIT_FORMAT_UNIT_TEBIBITS_PER_SECOND = 55;
+
+  // Expresses values in tebibytes per second (`TiB/sec`).
+  UNIT_FORMAT_UNIT_TEBIBYTES_PER_SECOND = 56;
+
+  // Expresses values in pebibits per second (`PiBits/sec`).
+  UNIT_FORMAT_UNIT_PEBIBITS_PER_SECOND = 57;
+
+  // Expresses values in pebibytes per second (`PiB/sec`).
+  UNIT_FORMAT_UNIT_PEBIBYTES_PER_SECOND = 58;
+
+  UNIT_FORMAT_UNIT_DATETIME_UTC = 59;
+
+  UNIT_FORMAT_UNIT_DATETIME_LOCAL = 60;
+
+  // Expresses values in hertz (`Hz`).
+  UNIT_FORMAT_UNIT_HERTZ = 61;
+
+  // Expresses values in kilohertz (`KHz`).
+  UNIT_FORMAT_UNIT_KILOHERTZ = 62;
+
+  // Expresses values in megahertz (`MHz`).
+  UNIT_FORMAT_UNIT_MEGAHERTZ = 63;
+
+  // Expresses values in gigahertz (`GHz`).
+  UNIT_FORMAT_UNIT_GIGAHERTZ = 64;
+
+  UNIT_FORMAT_UNIT_DOLLAR = 65;
+
+  UNIT_FORMAT_UNIT_EURO = 66;
+
+  UNIT_FORMAT_UNIT_ROUBLE = 67;
+
+  // Expresses values in degrees Celsius (`°C`).
+  UNIT_FORMAT_UNIT_CELSIUS = 68;
+
+  // Expresses values in degrees Fahrenheit (`°F`).
+  UNIT_FORMAT_UNIT_FAHRENHEIT = 69;
+
+  // Expresses values in kelvin (`K`).
+  UNIT_FORMAT_UNIT_KELVIN = 70;
+
+  // Expresses values in flop per second (`FLOP/sec`).
+  UNIT_FORMAT_UNIT_FLOP_PER_SECOND = 71;
+
+  // Expresses values in kiloflop per second (`KFLOP/sec`).
+  UNIT_FORMAT_UNIT_KILOFLOP_PER_SECOND = 72;
+
+  // Expresses values in megaflop per second (`MFLOP/sec`).
+  UNIT_FORMAT_UNIT_MEGAFLOP_PER_SECOND = 73;
+
+  // Expresses values in gigaflop per second (`GFLOP/sec`).
+  UNIT_FORMAT_UNIT_GIGAFLOP_PER_SECOND = 74;
+
+  // Expresses values in petaflop per second (`PFLOP/sec`).
+  UNIT_FORMAT_UNIT_PETAFLOP_PER_SECOND = 75;
+
+  // Expresses values in exaflop per second (`EFLOP/sec`).
+  UNIT_FORMAT_UNIT_EXAFLOP_PER_SECOND = 76;
+
+  // Expresses values in meters per second (`m/sec`).
+  UNIT_FORMAT_UNIT_METERS_PER_SECOND = 77;
+
+  // Expresses values in kilometers per hour (`km/h`).
+  UNIT_FORMAT_UNIT_KILOMETERS_PER_HOUR = 78;
+
+  // Expresses values in miles per hour (`mi/h`).
+  UNIT_FORMAT_UNIT_MILES_PER_HOUR = 79;
+
+  UNIT_FORMAT_UNIT_MILLIMETER = 80;
+
+  UNIT_FORMAT_UNIT_CENTIMETER = 81;
+
+  UNIT_FORMAT_UNIT_METER = 82;
+
+  UNIT_FORMAT_UNIT_KILOMETER = 83;
+
+  UNIT_FORMAT_UNIT_MILE = 84;
+
+  // Expresses values in parts per million (`ppm`).
+  UNIT_FORMAT_UNIT_PPM = 85;
+
+  UNIT_FORMAT_UNIT_EVENTS_PER_SECOND = 86;
+
+  UNIT_FORMAT_UNIT_PACKETS = 87;
+
+  UNIT_FORMAT_UNIT_DBM = 88;
+
+  // Deprecated: Expresses virtual CPU cores based on CPU time (`vcpu`); use
+  // [UNIT_FORMAT_UNIT_NANOCORE_CPU][UnitFormat.UNIT_FORMAT_UNIT_NANOCORE_CPU].
+  UNIT_FORMAT_UNIT_VIRTUAL_CPU = 89 [
+    deprecated = true
+  ];
+
+  // Expresses values in messages per second (`mps`).
+  UNIT_FORMAT_UNIT_MESSAGES_PER_SECOND = 90;
+
+  // Equals [UNIT_FORMAT_UNIT_VIRTUAL_CPU][UnitFormat.UNIT_FORMAT_UNIT_VIRTUAL_CPU].
+  UNIT_FORMAT_UNIT_NANOCORE_CPU = 91;
+
+  // Equals `1000` [nanocores][UnitFormat.UNIT_FORMAT_UNIT_NANOCORE_CPU].
+  UNIT_FORMAT_UNIT_MICROCORE_CPU = 92;
+
+  // Equals `1000` [microcores][UnitFormat.UNIT_FORMAT_UNIT_MICROCORE_CPU].
+  UNIT_FORMAT_UNIT_MILLICORE_CPU = 93;
+
+  // Equals `1000` [millicores][UnitFormat.UNIT_FORMAT_UNIT_MILLICORE_CPU].
+  UNIT_FORMAT_UNIT_CORE_CPU = 94;
+
+  // Expresses values in amperes (`A`).
+  UNIT_FORMAT_UNIT_AMPERE = 95;
+
+  // Expresses values in kiloamperes (`kA`).
+  UNIT_FORMAT_UNIT_KILOAMPERE = 96;
+
+  // Expresses values in megaamperes (`MA`).
+  UNIT_FORMAT_UNIT_MEGAAMPERE = 97;
+
+  // Expresses values in gigaamperes (`GA`).
+  UNIT_FORMAT_UNIT_GIGAAMPERE = 98;
+
+  // Expresses values in volts (`V`).
+  UNIT_FORMAT_UNIT_VOLT = 99;
+
+  // Expresses values in kilovolts (`kV`).
+  UNIT_FORMAT_UNIT_KILOVOLT = 100;
+
+  // Expresses values in megavolts (`MV`).
+  UNIT_FORMAT_UNIT_MEGAVOLT = 101;
+
+  // Expresses values in gigavolts (`GV`).
+  UNIT_FORMAT_UNIT_GIGAVOLT = 102;
+
+  // Expresses values in watts (`W`).
+  UNIT_FORMAT_UNIT_WATT = 103;
+
+  // Expresses values in kilowatts (`kW`).
+  UNIT_FORMAT_UNIT_KILOWATT = 104;
+
+  // Expresses values in megawatts (`MW`).
+  UNIT_FORMAT_UNIT_MEGAWATT = 105;
+
+  // Expresses values in gigawatts (`GW`).
+  UNIT_FORMAT_UNIT_GIGAWATT = 106;
+
+  UNIT_FORMAT_UNIT_OHM = 107;
+
+  // Expresses values in kiloohms (`kOhm`).
+  UNIT_FORMAT_UNIT_KILOOHM = 108;
+
+  // Expresses values in megaohms (`MOhm`).
+  UNIT_FORMAT_UNIT_MEGAOHM = 109;
+
+  // Expresses values in gigaohms (`GOhm`).
+  UNIT_FORMAT_UNIT_GIGAOHM = 110;
+}

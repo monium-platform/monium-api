@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartFreezeDurationProto";
+option java_package = "monium.api.v4";
+
+enum ChartFreezeDuration {
+  CHART_FREEZE_DURATION_UNSPECIFIED = 0;
+
+  // Uses the last hour.
+  CHART_FREEZE_DURATION_HOUR = 1;
+
+  // Uses the last `24` hours.
+  CHART_FREEZE_DURATION_DAY = 2;
+
+  // Uses the last `7` days.
+  CHART_FREEZE_DURATION_WEEK = 3;
+
+  // Uses the last `31` days.
+  CHART_FREEZE_DURATION_MONTH = 4;
+}

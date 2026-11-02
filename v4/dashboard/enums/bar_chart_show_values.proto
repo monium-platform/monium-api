@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "BarChartShowValuesProto";
+option java_package = "monium.api.v4";
+
+enum BarChartShowValues {
+  // Uses automatic value display.
+  BAR_CHART_SHOW_VALUES_UNSPECIFIED = 0;
+
+  // Shows values when space permits.
+  BAR_CHART_SHOW_VALUES_AUTO = 1;
+
+  BAR_CHART_SHOW_VALUES_ALWAYS = 2;
+
+  BAR_CHART_SHOW_VALUES_NEVER = 3;
+}

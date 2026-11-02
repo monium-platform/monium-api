@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/common/enums/sort_order.proto";
+import "v4/dashboard/enums/legend_column_type.proto";
+import "v4/dashboard/enums/legend_position.proto";
+import "v4/dashboard/enums/legend_size_unit.proto";
+import "v4/dashboard/enums/legend_truncation.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "LegendSettingsProto";
+option java_package = "monium.api.v4";
+
+message LegendSettings {
+  LegendPosition position = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  LegendTruncation truncate = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Measures the legend size relative to chart height for [bottom
+  // placement][LegendPosition.LEGEND_POSITION_BOTTOM] or chart width for [right
+  // placement][LegendPosition.LEGEND_POSITION_RIGHT] when expressed as a percentage.
+  LegendSettingsSize size = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  oneof view {
+    LegendSettingsListView list = 4 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    LegendSettingsTableView table = 5 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  // Applies sorting to both table and list modes.
+  repeated LegendSettingsSortRule sort_rules = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message LegendSettingsSize {
+  int64 value = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  LegendSizeUnit unit = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message LegendSettingsTableViewColumn {
+  oneof kind {
+    LegendColumnType type = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    string additional_column_name = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message LegendSettingsListView {
+  // Sets the number of visual columns in list mode; `0` uses automatic layout.
+  int64 columns_count = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message LegendSettingsTableView {
+  repeated LegendSettingsTableViewColumn columns = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message LegendSettingsSortRule {
+  // (-- Differs from [LegendSettingsTableViewColumn][] to support future composite sorting. --)
+  oneof field {
+    LegendColumnType type = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    string additional_column_name = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  SortOrder order = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

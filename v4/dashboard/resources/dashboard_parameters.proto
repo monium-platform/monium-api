@@ -1,0 +1,309 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/common/enums/unit_format.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "DashboardParametersProto";
+option java_package = "monium.api.v4";
+
+message CustomParameter {
+  repeated string values = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool multiselectable = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated string default_values = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message DoubleParameter {
+  double default_value = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  UnitFormat unit_format = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message InfraPresetValue {
+  string service_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message IntegerParameter {
+  int64 default_value = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  UnitFormat unit_format = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message LabelValuesParameter {
+  string project_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string selectors = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string label_key = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool multiselectable = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated string default_values = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message Parameter {
+  string name = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string title = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  oneof data {
+    LabelValuesParameter label_values = 3 [
+      deprecated = true,
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    CustomParameter custom = 4 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    TextParameter text = 5 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    IntegerParameter integer_parameter = 6 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    DoubleParameter double_parameter = 7 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    TextValuesParameter text_values = 8 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ProjectParameter project_parameter = 9 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    WorkspaceParameter workspace_parameter = 10 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    QueryParameter query_parameter = 11 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  bool hidden = 12 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string description = 13 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool grouped = 14 [
+    deprecated = true,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ParameterPresetValue {
+  string parameter_name = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated string value = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message Parametrization {
+  repeated Parameter parameters = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string selectors = 2 [
+    deprecated = true,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message PresetItem {
+  string title = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated InfraPresetValue infra_values = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Distinguishes an explicitly empty [infra_values][PresetItem.infra_values] list when `true`.
+  bool infra_values_exist = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated ParameterPresetValue parameter_values = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Distinguishes an explicitly empty [parameter_values][PresetItem.parameter_values] list when `true`.
+  bool parameter_values_exist = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated LogsOverlayPresetValue logs_overlay_values = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Distinguishes an explicitly empty [logs_overlay_values][PresetItem.logs_overlay_values] list when `true`.
+  bool logs_overlay_values_exist = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ProjectParameter {
+  // Restricts the allowed projects; an empty list allows all projects. Uses the first listed project as the
+  // default.
+  repeated string values = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message QueryParameter {
+  bool multiselectable = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Accepts a default value or comma-separated values.
+  repeated string default_values = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated QueryParameterCustomItem custom_items = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Applies regular-expression search and replacement to label values.
+  repeated RelabelItem relabel_items = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  oneof data_source {
+    MonitoringQuerySource monitoring = 5 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    PrometheusQuerySource prometheus = 6 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message QueryParameterCustomItem {
+  string value = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string key = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message TextParameter {
+  string default_value = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message TextValuesParameter {
+  repeated string default_values = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message WorkspaceParameter {
+  string project_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string default_workspace_id = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message LogsOverlayPresetValue {
+  string name = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message MonitoringQuerySource {
+  // Supports interpolation from another parameter value.
+  string project_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Selects metric label values and supports interpolation from another parameter value.
+  string selectors = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string label_key = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message PrometheusQuerySource {
+  // Selects metric label values and supports interpolation from another parameter value.
+  repeated string match = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string label_key = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Selects the search workspace and supports interpolation from another parameter value.
+  string workspace_id = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message RelabelItem {
+  // Matches values using a regular expression.
+  string find = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Specifies the regular-expression replacement.
+  string replace = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

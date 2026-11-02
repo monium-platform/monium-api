@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "OverlayProto";
+option java_package = "monium.api.v4";
+
+message LogsOverlay {
+  string query = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool text_mode = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool hidden = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string name = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string color = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+message Overlay {
+  oneof source {
+    LogsOverlay logs = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}

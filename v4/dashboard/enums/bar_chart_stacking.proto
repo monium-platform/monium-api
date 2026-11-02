@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "BarChartStackingProto";
+option java_package = "monium.api.v4";
+
+enum BarChartStacking {
+  // Disables stacking by default.
+  BAR_CHART_STACKING_UNSPECIFIED = 0;
+
+  // Places bars within a group side by side.
+  BAR_CHART_STACKING_OFF = 1;
+
+  // Stacks bars within a group.
+  BAR_CHART_STACKING_NORMAL = 2;
+}

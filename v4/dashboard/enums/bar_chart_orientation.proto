@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "BarChartOrientationProto";
+option java_package = "monium.api.v4";
+
+enum BarChartOrientation {
+  // Chooses the orientation from the widget proportions.
+  BAR_CHART_ORIENTATION_UNSPECIFIED = 0;
+
+  // Places categories on the horizontal axis.
+  BAR_CHART_ORIENTATION_VERTICAL = 1;
+
+  // Places categories on the vertical axis.
+  BAR_CHART_ORIENTATION_HORIZONTAL = 2;
+}

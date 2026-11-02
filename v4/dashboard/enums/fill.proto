@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "FillProto";
+option java_package = "monium.api.v4";
+
+enum Fill {
+  // Leaves a widget unfilled when no fill was chosen; on a series override, preserves the widget setting.
+  FILL_UNSPECIFIED = 0;
+
+  // Disables fill explicitly, unlike [FILL_UNSPECIFIED][Fill.FILL_UNSPECIFIED], which indicates no choice.
+  FILL_OFF = 1;
+
+  // Uses a translucent fill in the series color.
+  FILL_SOLID = 2;
+
+  // Uses a vertical gradient from the series color to transparent.
+  FILL_GRADIENT = 3;
+
+  // Uses hatching in the series color.
+  FILL_HATCH = 4;
+}

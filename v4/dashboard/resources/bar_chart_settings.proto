@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "google/protobuf/wrappers.proto";
+import "v4/dashboard/enums/bar_chart_aggregation.proto";
+import "v4/dashboard/enums/bar_chart_label_spacing.proto";
+import "v4/dashboard/enums/bar_chart_orientation.proto";
+import "v4/dashboard/enums/bar_chart_show_values.proto";
+import "v4/dashboard/enums/bar_chart_sort.proto";
+import "v4/dashboard/enums/bar_chart_stacking.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "BarChartSettingsProto";
+option java_package = "monium.api.v4";
+
+message BarChartSettings {
+  // Specifies a category as a label name, such as `code`, or a template over labels, such as `{{method}}
+  // {{code}}`. Series rendering the same value share a category. When empty, gives each series its own
+  // category for [bar charts][ChartVisualizationType.CHART_VISUALIZATION_TYPE_BARS]. For [distribution
+  // charts][ChartVisualizationType.CHART_VISUALIZATION_TYPE_DISTRIBUTION], detects the bin label as `bin`
+  // when present, otherwise as the single varying label.
+  string category = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Specifies a bar within the category as a label name, such as `method`, or a template, such as
+  // `{{method}}`. An empty value creates one bar per query. When multiple series share a bar, applies
+  // aggregation to each series and sums the results.
+  string bar = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  BarChartOrientation orientation = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  BarChartStacking stacking = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  BarChartShowValues show_values = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Specifies relative bar width from `0` to `1`. A value of `0` uses the minimum width; omission uses the
+  // renderer default, `0.97`.
+  google.protobuf.DoubleValue bar_width = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Specifies category tick label rotation in degrees, from `-90` to `90`. Omission uses automatic fitting,
+  // rotation, or hiding.
+  google.protobuf.Int64Value label_rotation = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  BarChartLabelSpacing label_spacing = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  BarChartSort sort = 9 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Reduces each series to its bar value over the time window.
+  BarChartAggregation aggregation = 10 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

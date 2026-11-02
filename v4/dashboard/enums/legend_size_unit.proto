@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "LegendSizeUnitProto";
+option java_package = "monium.api.v4";
+
+enum LegendSizeUnit {
+  LEGEND_SIZE_UNIT_UNSPECIFIED = 0;
+
+  LEGEND_SIZE_UNIT_PERCENT = 1;
+
+  LEGEND_SIZE_UNIT_PX = 2;
+}

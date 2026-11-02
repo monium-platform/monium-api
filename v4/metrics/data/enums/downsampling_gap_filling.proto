@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "DownsamplingGapFillingProto";
+option java_package = "monium.api.v4";
+
+enum DownsamplingGapFilling {
+  DOWNSAMPLING_GAP_FILLING_UNSPECIFIED = 0;
+
+  // Returns `null` as a metric value and `timestamp` as a time series value.
+  DOWNSAMPLING_GAP_FILLING_NULL = 1;
+
+  // Returns no value and no timestamp.
+  DOWNSAMPLING_GAP_FILLING_NONE = 2;
+
+  // Returns the value from the previous time interval.
+  DOWNSAMPLING_GAP_FILLING_PREVIOUS = 3;
+}

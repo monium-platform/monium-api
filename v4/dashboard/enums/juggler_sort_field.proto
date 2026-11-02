@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "JugglerSortFieldProto";
+option java_package = "monium.api.v4";
+
+enum JugglerSortField {
+  JUGGLER_SORT_FIELD_UNSPECIFIED = 0;
+
+  JUGGLER_SORT_FIELD_TIME = 1;
+
+  JUGGLER_SORT_FIELD_SERVICE = 2;
+
+  JUGGLER_SORT_FIELD_HOST = 3;
+}

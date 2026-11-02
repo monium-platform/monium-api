@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartInterpolationProto";
+option java_package = "monium.api.v4";
+
+enum ChartInterpolation {
+  // Uses linear interpolation by default.
+  CHART_INTERPOLATION_UNSPECIFIED = 0;
+
+  CHART_INTERPOLATION_LINEAR = 1;
+
+  CHART_INTERPOLATION_LEFT = 2;
+
+  CHART_INTERPOLATION_RIGHT = 3;
+}

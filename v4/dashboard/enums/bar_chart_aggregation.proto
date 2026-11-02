@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "BarChartAggregationProto";
+option java_package = "monium.api.v4";
+
+enum BarChartAggregation {
+  // Uses summation for [distribution charts][ChartVisualizationType.CHART_VISUALIZATION_TYPE_DISTRIBUTION],
+  // matching the default aggregation of `HIST`, `HIST_RATE`, and `LOG_HISTOGRAM`; uses averaging for [bar
+  // charts][ChartVisualizationType.CHART_VISUALIZATION_TYPE_BARS].
+  BAR_CHART_AGGREGATION_UNSPECIFIED = 0;
+
+  BAR_CHART_AGGREGATION_AVG = 1;
+
+  BAR_CHART_AGGREGATION_MIN = 2;
+
+  BAR_CHART_AGGREGATION_MAX = 3;
+
+  BAR_CHART_AGGREGATION_LAST = 4;
+
+  BAR_CHART_AGGREGATION_SUM = 5;
+
+  // Counts non-`NaN` points.
+  BAR_CHART_AGGREGATION_COUNT = 6;
+}

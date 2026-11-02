@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/common/infra_event_sources.proto";
+import "v4/common/resource_audit.proto";
+import "v4/common/resource_management.proto";
+import public "v4/dashboard/resources/bar_chart_settings.proto";
+import public "v4/dashboard/resources/chart_widget.proto";
+import public "v4/dashboard/resources/dashboard_parameters.proto";
+import public "v4/dashboard/resources/dashboard_widgets.proto";
+import public "v4/dashboard/resources/legend_settings.proto";
+import public "v4/dashboard/resources/multi_source_chart_widget.proto";
+import public "v4/dashboard/resources/overlay.proto";
+import public "v4/dashboard/resources/thresholds.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "DashboardProto";
+option java_package = "monium.api.v4";
+
+message Dashboard {
+  reserved "slug";
+
+  // Identifies the dashboard with an immutable stable ID. Update requires this field regardless of the update
+  // mask. On creation, an empty value requests a server-generated ID; caller-chosen IDs follow
+  // [CreateDashboardRequest][].
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Identifies the immutable owning project. Update requires this field regardless of the update mask. On
+  // creation, omit this field and use [project_id][CreateDashboardRequest.project_id].
+  string project_id = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Provides the human-readable name displayed in the UI.
+  string name = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string description = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  map<string, string> labels = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Carries an opaque concurrency token. Pass it back unchanged; do not parse it as a revision.
+  // Optional on update and delete; omitted or empty imposes no client freshness precondition.
+  // A supplied malformed token returns `INVALID_ARGUMENT`; a mismatch returns `ABORTED`.
+  // Must be omitted on creation.
+  string etag = 6;
+
+  ResourceManagement resource_management = 7;
+
+  repeated Widget widgets = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  Parametrization parametrization = 9 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Loads infrastructure events in the UI.
+  InfraEventSources event_sources = 10 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Configures the refresh interval and time window.
+  Timeline timeline = 11 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated LinkItem links = 12 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Applies overlays to all widgets.
+  repeated Overlay overlays = 13 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated PresetItem preset_items = 14 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ResourceAudit resource_audit = 1000 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}

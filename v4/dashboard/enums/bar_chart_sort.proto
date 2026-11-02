@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "BarChartSortProto";
+option java_package = "monium.api.v4";
+
+enum BarChartSort {
+  // Uses numeric bin order for [distribution
+  // charts][ChartVisualizationType.CHART_VISUALIZATION_TYPE_DISTRIBUTION] and source data order for [bar
+  // charts][ChartVisualizationType.CHART_VISUALIZATION_TYPE_BARS].
+  BAR_CHART_SORT_UNSPECIFIED = 0;
+
+  BAR_CHART_SORT_VALUE_ASC = 1;
+
+  BAR_CHART_SORT_VALUE_DESC = 2;
+
+  // Sorts categories in ascending order, comparing numeric categories (histogram bins) as numbers and placing
+  // `+Inf` last.
+  BAR_CHART_SORT_CATEGORY_ASC = 3;
+
+  BAR_CHART_SORT_CATEGORY_DESC = 4;
+}

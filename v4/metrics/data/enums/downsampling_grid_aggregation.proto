@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "DownsamplingGridAggregationProto";
+option java_package = "monium.api.v4";
+
+enum DownsamplingGridAggregation {
+  DOWNSAMPLING_GRID_AGGREGATION_UNSPECIFIED = 0;
+
+  DOWNSAMPLING_GRID_AGGREGATION_MAX = 1;
+
+  DOWNSAMPLING_GRID_AGGREGATION_MIN = 2;
+
+  DOWNSAMPLING_GRID_AGGREGATION_SUM = 3;
+
+  DOWNSAMPLING_GRID_AGGREGATION_AVG = 4;
+
+  DOWNSAMPLING_GRID_AGGREGATION_LAST = 5;
+
+  // Total count of points.
+  DOWNSAMPLING_GRID_AGGREGATION_COUNT = 6;
+}

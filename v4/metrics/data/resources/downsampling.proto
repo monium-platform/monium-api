@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/metrics/data/enums/downsampling_gap_filling.proto";
+import "v4/metrics/data/enums/downsampling_grid_aggregation.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "DownsamplingProto";
+option java_package = "monium.api.v4";
+
+message Downsampling {
+  oneof mode {
+    // Maximum number of points to be returned.
+    int64 max_points = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    // Time interval (grid) for downsampling in milliseconds.
+    // Points in the specified range are aggregated into one time point.
+    int64 grid_interval = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    // Disable downsampling.
+    bool disabled = 3 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  // Function that is used for downsampling.
+  DownsamplingGridAggregation grid_aggregation = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Parameters for filling gaps in data.
+  DownsamplingGapFilling gap_filling = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

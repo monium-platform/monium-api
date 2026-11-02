@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "JugglerStatusProto";
+option java_package = "monium.api.v4";
+
+enum JugglerStatus {
+  JUGGLER_STATUS_UNSPECIFIED = 0;
+
+  JUGGLER_STATUS_CRITICAL = 1;
+
+  JUGGLER_STATUS_WARNING = 2;
+
+  JUGGLER_STATUS_OK = 3;
+
+  JUGGLER_STATUS_INFO = 4;
+}

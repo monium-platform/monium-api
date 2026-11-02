@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "InfraTypeProto";
+option java_package = "monium.api.v4";
+
+enum InfraType {
+  INFRA_TYPE_UNSPECIFIED = 0;
+
+  INFRA_TYPE_MAJOR_ISSUE = 1;
+
+  INFRA_TYPE_MAJOR_MAINTENANCE = 2;
+
+  INFRA_TYPE_MINOR_ISSUE = 3;
+
+  INFRA_TYPE_MINOR_MAINTENANCE = 4;
+}

@@ -1,0 +1,412 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "google/protobuf/wrappers.proto";
+import "v4/common/enums/sort_order.proto";
+import "v4/common/enums/unit_format.proto";
+import "v4/dashboard/enums/chart_interpolation.proto";
+import "v4/dashboard/enums/chart_line_hiding_type.proto";
+import "v4/dashboard/enums/chart_line_style.proto";
+import "v4/dashboard/enums/chart_line_visibility.proto";
+import "v4/dashboard/enums/chart_series_aggregation.proto";
+import "v4/dashboard/enums/chart_series_visualization_type.proto";
+import "v4/dashboard/enums/chart_threshold_aggregation.proto";
+import "v4/dashboard/enums/chart_tile_sort_field.proto";
+import "v4/dashboard/enums/chart_values_type.proto";
+import "v4/dashboard/enums/chart_visualization_type.proto";
+import "v4/dashboard/enums/chart_y_axis_position.proto";
+import "v4/dashboard/enums/chart_y_axis_type.proto";
+import "v4/dashboard/enums/fill.proto";
+import "v4/dashboard/resources/bar_chart_settings.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartSettingsProto";
+option java_package = "monium.api.v4";
+
+message ChartVisualizationSettings {
+  ChartVisualizationType type = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool normalize = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartInterpolation interpolate = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Does not apply to [bar charts][ChartVisualizationType.CHART_VISUALIZATION_TYPE_BARS] or [distribution
+  // charts][ChartVisualizationType.CHART_VISUALIZATION_TYPE_DISTRIBUTION]; use [bar
+  // aggregation][BarChartSettings.aggregation] for those types.
+  ChartSeriesAggregation aggregation = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartColorSchemeSettings color_scheme_settings = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartHeatmapSettings heatmap_settings = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartYAxisSettings yaxis_settings = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Displays a title inside the chart.
+  string title = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool show_labels = 9 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Configures the stat widget.
+  ChartTilesSettings tiles_settings = 10 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool hide_partial_data = 11 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  BarChartSettings bar_chart_settings = 12 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Fills the area under a line series. Behavior for other visualization types is undefined.
+  Fill fill = 13 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Specifies fill opacity from `0` to `100` percent. Omission uses the default opacity for the selected
+  // fill; `0` is fully transparent.
+  google.protobuf.Int64Value fill_opacity = 14 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartColorSchemeSettings {
+  oneof scheme {
+    ChartAutomaticColorScheme automatic = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ChartStandardColorScheme standard = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ChartGradientColorScheme gradient = 3 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    // Chooses colors by hashing the line name or value.
+    ChartHashColorScheme hash = 4 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ChartThresholdsColorScheme thresholds = 5 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ChartConstantColorScheme constant = 6 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message ChartAutomaticColorScheme {}
+
+message ChartStandardColorScheme {}
+
+message ChartHashColorScheme {}
+
+message ChartConstantColorScheme {
+  string color = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartThresholdsColorScheme {
+  ChartThresholdAggregation aggregation = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartGradientColorScheme {
+  string green_value = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string yellow_value = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string red_value = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string violet_value = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartHeatmapSettings {
+  string green_value = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string yellow_value = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string red_value = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string violet_value = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartYAxis {
+  ChartYAxisType type = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Allows an empty title.
+  string title = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Accepts an extended-format number or an empty value.
+  string min = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Accepts an extended-format number or an empty value.
+  string max = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  UnitFormat unit_format = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Accepts tick precision from `0` to `7`; omission uses the default precision.
+  google.protobuf.Int64Value precision = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartYAxisSettings {
+  ChartYAxis left = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartYAxis right = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartTilesSettings {
+  SortOrder sort_order = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartTileSortField sort_field = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool show_title = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool show_value = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool show_sparkline = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartSeriesOverrides {
+  oneof type {
+    string name = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    string target_index = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  ChartSeriesOverrideSettings settings = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string override_name = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartOverrideMatcher matcher = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartSeriesOverrideSettings {
+  // Allows an empty series name.
+  string name = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Allows an empty series color.
+  string color = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartSeriesVisualizationType type = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Allows an empty stack name.
+  string stack_name = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Makes the stack grow downward.
+  bool grow_down = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartYAxisPosition yaxis_position = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  int64 line_width = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartLineStyle line_style = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartLineHidingType line_hiding_type = 9 [
+    deprecated = true,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool line_hiding_in_legend = 10 [
+    deprecated = true,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool line_hiding_in_tooltip = 11 [
+    deprecated = true,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool line_hiding_in_chart = 12 [
+    deprecated = true,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Replaces deprecated [line_hiding_in_legend][ChartSeriesOverrideSettings.line_hiding_in_legend].
+  ChartLineVisibility line_visibility_in_legend = 13 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Replaces deprecated [line_hiding_in_tooltip][ChartSeriesOverrideSettings.line_hiding_in_tooltip].
+  ChartLineVisibility line_visibility_in_tooltip = 14 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Replaces deprecated [line_hiding_in_chart][ChartSeriesOverrideSettings.line_hiding_in_chart].
+  ChartLineVisibility line_visibility_in_chart = 15 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Overrides the widget fill unless set to [FILL_UNSPECIFIED][Fill.FILL_UNSPECIFIED].
+  Fill fill = 16 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Specifies fill opacity from `0` to `100` percent. Omission preserves the widget setting; `0` is fully
+  // transparent.
+  google.protobuf.Int64Value fill_opacity = 17 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartOverrideMatcher {
+  oneof type {
+    ChartQueryMatcher query = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ChartLineMatcher line = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ChartRegExpMatcher regexp = 3 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ChartValueMatcher values = 4 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message ChartQueryMatcher {
+  repeated string names = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartLineMatcher {
+  repeated string line_ids = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartRegExpMatcher {
+  string reg_exp = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartValueMatcher {
+  ChartValuesType value_type = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartNameHidingSettings {
+  // Shows only the listed series when `true`; hides the listed series when `false`.
+  bool positive = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Selects series to show or hide according to [positive][ChartNameHidingSettings.positive].
+  repeated string names = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ChartRepeatSettings {
+  repeated string repeat_by = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  int64 max_charts_in_row = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartLineHidingTypeProto";
+option java_package = "monium.api.v4";
+
+enum ChartLineHidingType {
+  option deprecated = true;
+
+  CHART_LINE_HIDING_TYPE_UNSPECIFIED = 0;
+
+  CHART_LINE_HIDING_TYPE_HIDE_LEGEND = 1;
+
+  CHART_LINE_HIDING_TYPE_HIDE_TOOLTIP = 2;
+
+  CHART_LINE_HIDING_TYPE_HIDE_EVERYWHERE = 3;
+}

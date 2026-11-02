@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartTileSortFieldProto";
+option java_package = "monium.api.v4";
+
+enum ChartTileSortField {
+  CHART_TILE_SORT_FIELD_UNSPECIFIED = 0;
+
+  CHART_TILE_SORT_FIELD_VALUE = 1;
+
+  CHART_TILE_SORT_FIELD_TITLE = 2;
+}

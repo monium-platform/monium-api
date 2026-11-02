@@ -1,0 +1,505 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/alerting/alert/enums/evaluation_status.proto";
+import "v4/common/enums/sort_order.proto";
+import "v4/dashboard/enums/juggler_sort_field.proto";
+import "v4/dashboard/enums/juggler_status.proto";
+import "v4/dashboard/enums/widget_title_size.proto";
+import "v4/dashboard/resources/chart_widget.proto";
+import "v4/dashboard/resources/multi_source_chart_widget.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "DashboardWidgetsProto";
+option java_package = "monium.api.v4";
+
+message AlertListWidget {
+  string project_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Filters results using a selector expression.
+  string selectors = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  oneof order_by {
+    SortOrder order_by_name = 3 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    SortOrder order_by_status = 4 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    SortOrder order_by_status_change_time = 5 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  // Shows all available alert annotations when `true`; otherwise filters them using
+  // [annotation_names][AlertListWidget.annotation_names].
+  bool show_all_annotations = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Selects the annotations rendered on the widget.
+  repeated string annotation_names = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string title = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Limits the number of returned items.
+  int32 page_size = 9 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Groups a multi-alert into one response item when `true`.
+  bool group_multi_alert = 10 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Groups the treemap by label names; their order defines drilldown levels.
+  repeated string group_by_labels = 11 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Applies all [group_by_labels][AlertListWidget.group_by_labels] in one drilldown level when `true`.
+  bool all_labels_grouping = 12 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Uses manual layout instead of automatic layout.
+  optional bool manual_layout = 13 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Sets the number of columns per row for manual layout.
+  optional int64 columns_per_row = 14 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Sets the minimum number of rows for manual layout.
+  optional int64 min_rows_count = 15 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message AlertWidget {
+  string project_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string alert_id = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Filters labels using a selector expression.
+  string labels_filter = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated EvaluationStatus eval_status_filters = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated string annotation_keys = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // (-- Is not enabled in the UI. --)
+  string description = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string title = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message EscalationWidget {
+  string project_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string title = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated string escalations = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Limits the number of displayed items.
+  int64 max_count = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool show_only_running = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message GroupWidget {
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string title = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool collapsed = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated GroupWidgetChildWidget widgets = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  GroupWidgetRepeatSettings repeat_settings = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message IframeWidget {
+  string url = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // (-- Is not enabled in the UI. --)
+  string description = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string title = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message JugglerWidget {
+  string project_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string title = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string query = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated JugglerStatus statuses = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Limits the number of displayed aggregates.
+  int64 max_amount = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  SortOrder sort_order = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  JugglerSortField sort_field = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated JugglerWidgetCustomLink links = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message Link {
+  string title = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool open_in_new_tab = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  oneof type {
+    // Accepts a URL template with Mustache expressions (`{{expression}}`). Supports dashboard parameters and
+    // the time-range variables `__from:<format>` and `__to:<format>`, where `<format>` is `iso`, `seconds`,
+    // or `milliseconds`.
+    string url = 3 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    LinkDashboard dashboard = 4 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message LinkItem {
+  oneof type {
+    Link link = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    LinkItemLinkGroup group = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message SloListWidget {
+  string project_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Filters results using a selector expression.
+  string selectors = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  oneof order_by {
+    SortOrder order_by_name = 3 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    SortOrder order_by_sli = 4 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    SortOrder order_by_error_budget = 5 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  string title = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Selects the displayed columns.
+  repeated ColumnData columns = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message TextWidget {
+  string text = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message Timeline {
+  // Sets the default time window.
+  string period = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Sets the default refresh interval.
+  optional int64 refresh_interval = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message TitleWidget {
+  string text = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  WidgetTitleSize size = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message Widget {
+  WidgetLayoutPosition position = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  oneof widget {
+    TextWidget text = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    TitleWidget title = 3 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ChartWidget chart = 4 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    AlertListWidget alert_list = 5 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    AlertWidget alert = 6 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    IframeWidget iframe = 7 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    JugglerWidget juggler = 8 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    EscalationWidget escalation = 9 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    MultiSourceChartWidget multi_source_chart = 10 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    GroupWidget group = 11 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    SloListWidget slo_list = 12 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  repeated LinkItem links = 13 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message GroupWidgetRepeatSettings {
+  repeated string repeat_by = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message GroupWidgetChildWidget {
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated LinkItem links = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Positions the widget within its group.
+  WidgetLayoutPosition position = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  oneof widget {
+    TextWidget text = 4 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    TitleWidget title = 5 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ChartWidget chart = 6 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    AlertWidget alert = 7 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    IframeWidget iframe = 8 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    JugglerWidget juggler = 9 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    EscalationWidget escalation = 10 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    MultiSourceChartWidget multi_source_chart = 11 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    AlertListWidget alert_list = 12 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    SloListWidget slo_list = 13 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message JugglerWidgetCustomLink {
+  string url = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string text = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message LinkDashboard {
+  string project_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Looks up a dashboard by its ID within the project.
+  string dashboard_name = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool apply_time_range = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Passes parameter values when opening the linked dashboard; see [Parametrization][].
+  map<string, string> parameters = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message LinkItemLinkGroup {
+  string title = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated LinkItem items = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message WidgetLayoutPosition {
+  // Specifies the horizontal coordinate of the top-left corner.
+  int64 x = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Specifies the vertical coordinate of the top-left corner.
+  int64 y = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  int64 w = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  int64 h = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ColumnData {
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool selected = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChartThresholdAggregationProto";
+option java_package = "monium.api.v4";
+
+enum ChartThresholdAggregation {
+  CHART_THRESHOLD_AGGREGATION_UNSPECIFIED = 0;
+
+  CHART_THRESHOLD_AGGREGATION_LAST = 1;
+
+  CHART_THRESHOLD_AGGREGATION_MIN = 2;
+
+  CHART_THRESHOLD_AGGREGATION_MAX = 3;
+
+  CHART_THRESHOLD_AGGREGATION_AVG = 4;
+
+  CHART_THRESHOLD_AGGREGATION_SUM = 5;
+}

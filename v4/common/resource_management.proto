@@ -10,6 +10,6 @@ option java_package = "monium.api.v4";
 message ResourceManagement {
   string managed_by = 1;
 
-  // Must be a valid URI.
+  // Requires a valid URI.
   string managed_link = 2;
 }

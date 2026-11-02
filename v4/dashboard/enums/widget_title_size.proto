@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "WidgetTitleSizeProto";
+option java_package = "monium.api.v4";
+
+enum WidgetTitleSize {
+  WIDGET_TITLE_SIZE_UNSPECIFIED = 0;
+
+  WIDGET_TITLE_SIZE_XS = 1;
+
+  WIDGET_TITLE_SIZE_S = 2;
+
+  WIDGET_TITLE_SIZE_M = 3;
+
+  WIDGET_TITLE_SIZE_L = 4;
+}

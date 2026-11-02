@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "BarChartLabelSpacingProto";
+option java_package = "monium.api.v4";
+
+enum BarChartLabelSpacing {
+  // Uses automatic label spacing.
+  BAR_CHART_LABEL_SPACING_UNSPECIFIED = 0;
+
+  // Shows every label without minimum spacing.
+  BAR_CHART_LABEL_SPACING_NONE = 1;
+
+  // Leaves at least `100` pixels between labels.
+  BAR_CHART_LABEL_SPACING_SMALL = 2;
+
+  // Leaves at least `200` pixels between labels.
+  BAR_CHART_LABEL_SPACING_MEDIUM = 3;
+
+  // Leaves at least `300` pixels between labels.
+  BAR_CHART_LABEL_SPACING_LARGE = 4;
+}

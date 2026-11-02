@@ -1,0 +1,284 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "v4/dashboard/resources/dashboard.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "DashboardServiceProto";
+option java_package = "monium.api.v4";
+
+// Manages persisted dashboards.
+service DashboardService {
+  // Returns a dashboard by its project and stable ID.
+  rpc GetDashboard(GetDashboardRequest) returns (Dashboard) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/dashboards/{id}"
+    };
+    option (google.api.method_signature) = "project_id,id";
+  }
+
+  // Lists dashboards in a project using text search and structured selectors, with pagination and optional ordering.
+  rpc ListDashboards(ListDashboardsRequest) returns (ListDashboardsResponse) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/dashboards"
+    };
+    option (google.api.method_signature) = "project_id";
+  }
+
+  rpc CreateDashboard(CreateDashboardRequest) returns (Dashboard) {
+    option (google.api.http) = {
+      post: "/api/v4/projects/{project_id}/dashboards"
+      body: "dashboard"
+    };
+    option (google.api.method_signature) = "project_id,dashboard";
+  }
+
+  // Applies the update synchronously. Validates a supplied `etag` even when the update changes no fields.
+  rpc UpdateDashboard(UpdateDashboardRequest) returns (Dashboard) {
+    option (google.api.http) = {
+      patch: "/api/v4/projects/{dashboard.project_id}/dashboards/{dashboard.id}"
+      body: "dashboard"
+    };
+    option (google.api.method_signature) = "dashboard,update_mask";
+  }
+
+  // Deletes a dashboard synchronously, checking freshness when an `etag` is supplied.
+  rpc DeleteDashboard(DeleteDashboardRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v4/projects/{project_id}/dashboards/{id}"
+    };
+    option (google.api.method_signature) = "project_id,id";
+  }
+
+  // Deletes between `1` and `100` dashboards atomically. Empty batches or batches exceeding `100` requests
+  // return `INVALID_ARGUMENT`. Any validation, authorization, existence or `etag` failure leaves all
+  // dashboards unchanged. A batch exceeding transaction limits fails as a whole.
+  rpc BatchDeleteDashboards(BatchDeleteDashboardsRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/api/v4/dashboards:batchDelete"
+      body: "*"
+    };
+  }
+
+  // Returns distinct label names from dashboards in the project, up to the requested limit. The `selector`
+  // filters source dashboards; `text` filters returned names by substring.
+  rpc SuggestDashboardLabelNames(SuggestDashboardLabelNamesRequest) returns (SuggestDashboardLabelNamesResponse) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/dashboards:suggestDashboardLabelNames"
+    };
+  }
+
+  // Returns distinct values of the specified nonempty label name from dashboards in the project, up to the
+  // requested limit. The `selector` filters source dashboards; `text` filters returned values by substring.
+  rpc SuggestDashboardLabelValues(SuggestDashboardLabelValuesRequest) returns (SuggestDashboardLabelValuesResponse) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/dashboards:suggestDashboardLabelValues"
+    };
+  }
+}
+
+message GetDashboardRequest {
+  string id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string project_id = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message ListDashboardsRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Defaults to `100` when omitted or `0`; values above `1000` are capped at `1000`. Negative values return
+  // `INVALID_ARGUMENT`. The server may return fewer items with a continuation token.
+  int32 page_size = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Uses the previous response's opaque token; empty selects the first page.
+  // Keep all query parameters except `page_size` unchanged. Invalid or mismatched tokens return `INVALID_ARGUMENT`.
+  // Does not provide a snapshot across pages.
+  string page_token = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Matches dashboard fields using Monium selector expressions; comma-separated predicates are combined with
+  // `AND`. Supports `id`, `name`, `description`, `resource_management.managed_by` and `labels.<key>`.
+  // Supports equality, glob and regular-expression predicates. Empty imposes no filtering constraint.
+  // Unsupported fields or invalid expressions return `INVALID_ARGUMENT`.
+  string selector = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Selects resource-relative fields of each dashboard; omitted or empty returns all fields.
+  // Supports nested singular-message paths and whole lists/maps, but not collection elements or wildcards.
+  // Invalid paths return `INVALID_ARGUMENT`.
+  google.protobuf.FieldMask read_mask = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Orders by one field: `name`, `resource_audit.create_time` or `resource_audit.update_time`.
+  // Defaults to ascending; accepts ` asc` or ` desc`. Extra whitespace is ignored.
+  // Compares strings lexicographically and timestamps chronologically; ties use stable ID in the same direction.
+  // Empty uses server-defined relevance ordering when `search` is nonempty and stable-ID ordering otherwise.
+  // Multiple fields, unknown fields or malformed ordering return `INVALID_ARGUMENT`.
+  string order_by = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Searches metadata case-insensitively using text, not a filter expression.
+  // Matches `name`, `description`, label values, `id`, `resource_management.managed_by`,
+  // `resource_audit.created_by` and `resource_audit.updated_by`; tokenization and ranking are server-defined.
+  // A dashboard must match both `search` and `selector`. Empty imposes no search constraint.
+  // Use `selector` for field predicates; this field does not interpret AIP-160 operators.
+  string search = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListDashboardsResponse {
+  repeated Dashboard dashboards = 1;
+  // Is empty when there are no more results.
+  string next_page_token = 2;
+}
+
+message CreateDashboardRequest {
+  // Uses [id][Dashboard.id] when supplied; otherwise generates an ID. A caller-chosen ID must match
+  // `[a-z][a-z0-9_-]{0,62}`. Omit [project_id][Dashboard.project_id]. Ignores output-only fields. Must not
+  // supply an `etag` when creating a dashboard.
+  Dashboard dashboard = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string project_id = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message UpdateDashboardRequest {
+  // Requires nonempty `id` and `project_id`, regardless of the update mask. An omitted or empty `etag`
+  // imposes no client freshness precondition. A supplied `etag` must be a valid opaque token; malformed
+  // tokens return `INVALID_ARGUMENT`. Checks a supplied `etag` atomically with the update, independently of
+  // the update mask; a mismatch returns `ABORTED`.
+  Dashboard dashboard = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Records the change description in dashboard history.
+  string comment = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Uses resource-relative paths. Omission infers populated fields; an explicitly empty mask is a no-op.
+  // Empty singular-message wrappers contribute no inferred paths. A sole `*` replaces all mutable fields.
+  // Explicitly masked defaults clear scalar fields; selected empty lists/maps clear those collections, and
+  // selected collections replace rather than append. Supports nested singular-message paths while preserving
+  // unselected siblings. Does not support collection element paths, map-key paths or nested wildcards.
+  // Invalid paths return `INVALID_ARGUMENT`. Ignores output-only fields. Identity fields cannot change; a
+  // supplied `etag` remains a precondition independent of the mask.
+  google.protobuf.FieldMask update_mask = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message DeleteDashboardRequest {
+  string id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  string project_id = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Accepts the dashboard's opaque token. Omitted or empty imposes no client freshness precondition.
+  // Malformed tokens return `INVALID_ARGUMENT`; a mismatch returns `ABORTED`. Checks a supplied `etag`
+  // atomically with the deletion.
+  string etag = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Records the deletion description in dashboard history.
+  string comment = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message BatchDeleteDashboardsRequest {
+  // Allows each request to omit its `etag` independently; checks all supplied tokens in the atomic deletion.
+  // Contains between `1` and `100` requests. Repeated targets identified by (`project_id`, `id`) return
+  // `INVALID_ARGUMENT`, even when their `etag` values and comments are identical. Validation precedes
+  // mutation.
+  repeated DeleteDashboardRequest requests = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message SuggestDashboardLabelNamesRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Selects the source dashboards using the syntax and matching rules of
+  // [selector][ListDashboardsRequest.selector].
+  string selector = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Matches returned label names containing this substring; empty imposes no substring constraint.
+  string text = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Defaults to `100` when omitted or `0` and caps larger values at `100`. Negative values return
+  // `INVALID_ARGUMENT`.
+  int64 page_size = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message SuggestDashboardLabelNamesResponse {
+  repeated string label_names = 1;
+  // Indicates that additional matching suggestions were omitted. Refine `text` or `selector` to narrow the results.
+  bool truncated = 2;
+}
+
+message SuggestDashboardLabelValuesRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Selects the source dashboards using the syntax and matching rules of
+  // [selector][ListDashboardsRequest.selector].
+  string selector = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Selects an exact, nonempty label name. Empty returns `INVALID_ARGUMENT`.
+  string label_name = 3 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Matches returned label values containing this substring; empty imposes no substring constraint.
+  string text = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Defaults to `100` when omitted or `0` and caps larger values at `100`. Negative values return
+  // `INVALID_ARGUMENT`.
+  int64 page_size = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message SuggestDashboardLabelValuesResponse {
+  repeated string label_values = 1;
+  // Indicates that additional matching suggestions were omitted. Refine `text` or `selector` to narrow the results.
+  bool truncated = 2;
+}

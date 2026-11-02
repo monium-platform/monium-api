@@ -1,0 +1,181 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/common/infra_event_sources.proto";
+import "v4/dashboard/enums/chart_freeze_duration.proto";
+import "v4/dashboard/resources/chart_settings.proto";
+import "v4/dashboard/resources/legend_settings.proto";
+import "v4/dashboard/resources/overlay.proto";
+import "v4/dashboard/resources/thresholds.proto";
+import "v4/metrics/data/resources/downsampling.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "MultiSourceChartWidgetProto";
+option java_package = "monium.api.v4";
+
+message MultiSourceChartWidget {
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated MultiSourceChartTarget targets = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated MultiSourceChartDataSource data_sources = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartVisualizationSettings visualization_settings = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated ChartSeriesOverrides series_overrides = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ChartNameHidingSettings name_hiding_settings = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // (-- Is not enabled in the UI. --)
+  string description = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string title = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool display_legend = 9 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Fixes the chart time interval.
+  ChartFreezeDuration freeze = 10 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Configures repeated panels or rows.
+  ChartRepeatSettings repeat = 11 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  Thresholds thresholds = 12 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Loads infrastructure events in the UI.
+  InfraEventSources event_sources = 13 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated Overlay overlays = 14 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  LegendSettings legend_settings = 15 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message MultiSourceChartTarget {
+  oneof target {
+    MonitoringChartTarget monitoring_target = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    PrometheusChartTarget prometheus_target = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message MonitoringChartTarget {
+  string data_source_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string query = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool text_mode = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool hidden = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string name = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message PrometheusChartTarget {
+  string data_source_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string workspace_id = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string query = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool text_mode = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool hidden = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string name = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Accepts the minimum step as a raw string.
+  string step = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message MultiSourceChartDataSource {
+  oneof data_source {
+    MonitoringChartDataSource monitoring_data_source = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    PrometheusChartDataSource prometheus_data_source = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message MonitoringChartDataSource {
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  Downsampling downsampling = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message PrometheusChartDataSource {
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Specifies the grid step in milliseconds.
+  int64 step = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
