@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package monium.api;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/monium/api";
+option java_multiple_files = true;
+option java_outer_classname = "ValidationProto";
+option java_package = "monium.api";
+
+// Describes constraints for validation consumers; all specified constraints must hold.
+// These options do not enable request validation by themselves.
+extend google.protobuf.FieldOptions {
+  // Requires the entire string to match the regular expression.
+  // Applies to each repeated element or map value.
+  string pattern = 82211;
+
+  // Restricts numeric values using a comparison (`<=10`), an inclusive range (`1-10`),
+  // a comma-separated set (`1,3,5`), or an exact value (`5`).
+  // Applies to each repeated element or map value.
+  string value = 82212;
+
+  // Limits the number of repeated elements or map entries using the `value` syntax.
+  string size = 82213;
+
+  // Limits string length in Unicode code points using the `value` syntax.
+  // Applies to each repeated element or map value.
+  string length = 82214;
+
+  // Requires distinct elements in a repeated field when set to `true`.
+  bool unique = 82215;
+
+  // Restricts each map key. The `pattern`, `value`, `length`, and `bytes` constraints
+  // on the map field apply to its values; `size` applies to the map itself.
+  MapKeySpec map_key = 82216;
+
+  // Limits byte size using the `value` syntax.
+  // Measures UTF-8 bytes for strings, raw bytes for `bytes` fields,
+  // and serialized protobuf bytes for message fields.
+  // Applies to each repeated element or map value.
+  string bytes = 82217;
+}
+
+message MapKeySpec {
+  // Restricts numeric keys using the `monium.api.value` syntax.
+  string value = 1;
+
+  // Requires the entire string key to match the regular expression.
+  string pattern = 2;
+
+  // Limits string key length in Unicode code points using the `monium.api.value` syntax.
+  string length = 3;
+}
