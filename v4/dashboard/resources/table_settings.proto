@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/common/enums/sort_order.proto";
+import "v4/dashboard/enums/table_aggregation.proto";
+import "v4/dashboard/enums/table_cell_display_mode.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "TableSettingsProto";
+option java_package = "monium.api.v4";
+
+// Configures table visualization. Applies settings to the whole table; column titles and units
+// can be overridden through [ChartColumnMatcher][].
+message TableSettings {
+  // Produces one value column per distinct aggregation over the time window.
+  // Uses a single `TABLE_AGGREGATION_LAST` column when empty; unspecified entries also use last.
+  repeated TableAggregation value_columns = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Lists visible columns in display order. When empty, displays all produced columns, label columns first.
+  repeated TableColumnRef columns = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Applies sorting in priority order when the table opens.
+  repeated TableSort sorts = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool hide_header = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Keeps the header visible while scrolling.
+  bool freeze_header = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Displays aggregates over the rows in a footer.
+  bool show_footer = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Applies footer aggregations to every value column. When empty and `show_footer` is true,
+  // uses `TABLE_AGGREGATION_SUM`.
+  repeated TableAggregation footer_aggregations = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Keeps the footer visible while scrolling.
+  bool freeze_footer = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  TableCellDisplayMode cell_display_mode = 9 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Groups series into rows by these labels, adding a column for each label. Matches rows of
+  // several queries by label values; each query contributes its own value columns. Reduces each
+  // series over the time window before combining members with `cross_series_aggregation`.
+  // When empty, uses one row per series of every query, and the queries share the value columns.
+  repeated string group_by = 10 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Combines member series within a group. Uses summation when unspecified.
+  TableAggregation cross_series_aggregation = 11 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+// Identifies a label column or a value column by query and aggregation.
+message TableColumnRef {
+  oneof kind {
+    string label = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    TableValueColumn value = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message TableValueColumn {
+  // Identifies the query. Remains empty when the column does not belong to one query,
+  // such as a single-query table or an empty `group_by`.
+  string query = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Uses `TABLE_AGGREGATION_LAST` when unspecified, as in [TableSettings.value_columns][].
+  TableAggregation aggregation = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message TableSort {
+  TableColumnRef column = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  SortOrder direction = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

@@ -20,6 +20,7 @@ import "v4/dashboard/enums/chart_y_axis_position.proto";
 import "v4/dashboard/enums/chart_y_axis_type.proto";
 import "v4/dashboard/enums/fill.proto";
 import "v4/dashboard/resources/bar_chart_settings.proto";
+import "v4/dashboard/resources/table_settings.proto";
 
 option go_package = "github.com/monium/api/v4";
 option java_multiple_files = true;
@@ -88,6 +89,10 @@ message ChartVisualizationSettings {
   // Specifies fill opacity from `0` to `100` percent. Omission uses the default opacity for the selected
   // fill; `0` is fully transparent.
   google.protobuf.Int64Value fill_opacity = 14 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  TableSettings table_settings = 15 [
     (google.api.field_behavior) = OPTIONAL
   ];
 }
@@ -343,6 +348,12 @@ message ChartSeriesOverrideSettings {
   google.protobuf.Int64Value fill_opacity = 17 [
     (google.api.field_behavior) = OPTIONAL
   ];
+
+  // Overrides the series unit, or the column unit when matched by [ChartColumnMatcher][].
+  // Preserves the widget setting when unspecified.
+  UnitFormat unit_format = 18 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
 }
 
 message ChartOverrideMatcher {
@@ -360,6 +371,10 @@ message ChartOverrideMatcher {
     ];
 
     ChartValueMatcher values = 4 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    ChartColumnMatcher column = 5 [
       (google.api.field_behavior) = OPTIONAL
     ];
   }
@@ -385,6 +400,14 @@ message ChartRegExpMatcher {
 
 message ChartValueMatcher {
   ChartValuesType value_type = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+// Selects table columns. Only `name` and `unit_format` override settings apply,
+// changing the column title and unit respectively.
+message ChartColumnMatcher {
+  repeated TableColumnRef columns = 1 [
     (google.api.field_behavior) = OPTIONAL
   ];
 }

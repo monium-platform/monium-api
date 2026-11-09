@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "TableCellDisplayModeProto";
+option java_package = "monium.api.v4";
+
+enum TableCellDisplayMode {
+  // Displays the plain value by default.
+  TABLE_CELL_DISPLAY_MODE_UNSPECIFIED = 0;
+  TABLE_CELL_DISPLAY_MODE_VALUE = 1;
+  // Colors the background using color scheme thresholds.
+  TABLE_CELL_DISPLAY_MODE_COLORED_BACKGROUND = 2;
+  // Colors the value text using color scheme thresholds.
+  TABLE_CELL_DISPLAY_MODE_COLORED_TEXT = 3;
+}

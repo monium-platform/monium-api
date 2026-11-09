@@ -34,4 +34,6 @@ enum ChartVisualizationType {
 
   // Aggregates series into tiles.
   CHART_VISUALIZATION_TYPE_TILES = 9;
+
+  CHART_VISUALIZATION_TYPE_TABLE = 10;
 }

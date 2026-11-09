@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "TableAggregationProto";
+option java_package = "monium.api.v4";
+
+enum TableAggregation {
+  TABLE_AGGREGATION_UNSPECIFIED = 0;
+  TABLE_AGGREGATION_AVG = 1;
+  TABLE_AGGREGATION_MIN = 2;
+  TABLE_AGGREGATION_MAX = 3;
+  // Selects the last non-`NaN` value.
+  TABLE_AGGREGATION_LAST = 4;
+  TABLE_AGGREGATION_SUM = 5;
+  // Counts non-`NaN` points.
+  TABLE_AGGREGATION_COUNT = 6;
+}
