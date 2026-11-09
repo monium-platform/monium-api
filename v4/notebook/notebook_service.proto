@@ -149,7 +149,7 @@ message SuggestNotebookLabelNamesRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  // Matches label names containing this substring.
+  // Matches label names containing this glob pattern.
   string text = 2 [
     (google.api.field_behavior) = OPTIONAL
   ];
@@ -186,10 +186,10 @@ message SuggestNotebookLabelValuesRequest {
 
   // Selects a label by its exact name.
   string label_name = 3 [
-    (google.api.field_behavior) = OPTIONAL
+    (google.api.field_behavior) = REQUIRED
   ];
 
-  // Matches label values containing this substring.
+  // Matches label values containing this glob pattern.
   string text = 4 [
     (google.api.field_behavior) = OPTIONAL
   ];
