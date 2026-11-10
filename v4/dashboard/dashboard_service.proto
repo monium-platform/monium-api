@@ -68,7 +68,7 @@ service DashboardService {
   }
 
   // Returns distinct label names from dashboards in the project, up to the requested limit. The `selector`
-  // filters source dashboards; `text` filters returned names by substring.
+  // filters source dashboards; `text` matches returned names case-insensitively with `*` and `?` wildcards.
   rpc SuggestDashboardLabelNames(SuggestDashboardLabelNamesRequest) returns (SuggestDashboardLabelNamesResponse) {
     option (google.api.http) = {
       get: "/api/v4/projects/{project_id}/dashboards:suggestDashboardLabelNames"
@@ -76,7 +76,8 @@ service DashboardService {
   }
 
   // Returns distinct values of the specified nonempty label name from dashboards in the project, up to the
-  // requested limit. The `selector` filters source dashboards; `text` filters returned values by substring.
+  // requested limit. The `selector` filters source dashboards; `text` matches returned values case-insensitively
+  // with `*` and `?` wildcards.
   rpc SuggestDashboardLabelValues(SuggestDashboardLabelValuesRequest) returns (SuggestDashboardLabelValuesResponse) {
     option (google.api.http) = {
       get: "/api/v4/projects/{project_id}/dashboards:suggestDashboardLabelValues"
@@ -112,7 +113,8 @@ message ListDashboardsRequest {
   ];
 
   // Matches dashboard fields using Monium selector expressions; comma-separated predicates are combined with
-  // `AND`. Supports `id`, `name`, `description`, `resource_management.managed_by` and `labels.<key>`.
+  // `AND`. Supports `id`, `name`, `description`, `resource_management.managed_by`,
+  // `resource_audit.created_by`, `resource_audit.updated_by` and `labels.<key>` with a nonempty key.
   // Supports equality, glob and regular-expression predicates. Empty imposes no filtering constraint.
   // Unsupported fields or invalid expressions return `INVALID_ARGUMENT`.
   string selector = 4 [
@@ -231,7 +233,11 @@ message SuggestDashboardLabelNamesRequest {
     (google.api.field_behavior) = OPTIONAL
   ];
 
-  // Matches returned label names containing this substring; empty imposes no substring constraint.
+  // Matches returned label names case-insensitively with implicit leading and trailing `*`.
+  // `*` matches any sequence of characters and `?` matches one character. Empty matches all names.
+  // Built-in names use v4 field paths: `id`, `name`, `description`, `resource_management.managed_by`,
+  // `resource_audit.created_by` and `resource_audit.updated_by`. Custom names retain the `labels.` prefix.
+  // The v4 `name` denotes the dashboard title; the legacy slug is not suggested.
   string text = 3 [
     (google.api.field_behavior) = OPTIONAL
   ];
@@ -260,12 +266,16 @@ message SuggestDashboardLabelValuesRequest {
     (google.api.field_behavior) = OPTIONAL
   ];
 
-  // Selects an exact, nonempty label name. Empty returns `INVALID_ARGUMENT`.
+  // Selects an exact, nonempty v4 label name as returned by SuggestDashboardLabelNames.
+  // Use `name` for the dashboard title, `resource_management.managed_by` for its manager,
+  // `resource_audit.created_by` or `resource_audit.updated_by` for audit authors, and `labels.<key>`
+  // for custom labels. Custom keys are not renamed. Empty returns `INVALID_ARGUMENT`.
   string label_name = 3 [
     (google.api.field_behavior) = REQUIRED
   ];
 
-  // Matches returned label values containing this substring; empty imposes no substring constraint.
+  // Matches returned label values case-insensitively with implicit leading and trailing `*`.
+  // `*` matches any sequence of characters and `?` matches one character. Empty matches all values.
   string text = 4 [
     (google.api.field_behavior) = OPTIONAL
   ];
