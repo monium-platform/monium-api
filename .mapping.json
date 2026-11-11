@@ -1,6 +1,7 @@
 {
   "annotations/experimental.proto":"monium/api/annotations/experimental.proto",
   "annotations/operation_info.proto":"monium/api/annotations/operation_info.proto",
+  "annotations/terraform.proto":"monium/api/annotations/terraform.proto",
   "annotations/validation.proto":"monium/api/annotations/validation.proto",
   "v4/alerting/alert/enums/evaluation_status.proto":"monium/api/v4/alerting/alert/enums/evaluation_status.proto",
   "v4/common/enums/infra_type.proto":"monium/api/v4/common/enums/infra_type.proto",

@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package monium.api;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/monium/api";
+option java_multiple_files = true;
+option java_outer_classname = "TerraformProto";
+option java_package = "monium.api";
+
+extend google.protobuf.MessageOptions {
+  // Generates a Terraform resource and data source using the Monium CRUD
+  // conventions and google.api.field_behavior. Unsupported contracts fail
+  // generation rather than being partially exposed.
+  bool terraform_resource = 87336;
+
+  // Generates only a data source for a read-only API.
+  bool terraform_data_source = 87337;
+}
+
+enum TerraformOperation {
+  TERRAFORM_OPERATION_UNSPECIFIED = 0;
+  CREATE = 1;
+  READ = 2;
+  UPDATE = 3;
+  DELETE = 4;
+}
+
+extend google.protobuf.MethodOptions {
+  // Overrides operation discovery for a nonstandard RPC, e.g. Remove -> DELETE.
+  // Standard Create/Get/Update/Delete<Resource> methods need no annotation.
+  // The resource is inferred from RPC types; Delete/Empty uses service reads.
+  TerraformOperation terraform_operation = 87338;
+}
+
+extend google.protobuf.FieldOptions {
+  // Represents a recursive structure as one Terraform ProtoJSON string to avoid
+  // imposing a fixed nesting depth in the Terraform schema. For example, a link
+  // group can contain other link groups through the same message type.
+  // Users write jsonencode(...); the provider validates ProtoJSON and converts
+  // it to/from the protobuf value. Ordinary nested fields remain typed.
+  bool terraform_json = 87340;
+}
