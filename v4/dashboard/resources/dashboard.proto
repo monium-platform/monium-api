@@ -36,26 +36,26 @@ message Dashboard {
     (google.api.field_behavior) = OPTIONAL
   ];
 
-  // Provides the human-readable name displayed in the UI.
-  string name = 3 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
-
-  string description = 4 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
-
-  map<string, string> labels = 5 [
-    (google.api.field_behavior) = OPTIONAL
-  ];
-
   // Carries an opaque concurrency token. Pass it back unchanged; do not parse it as a revision.
   // Optional on update and delete; omitted or empty imposes no client freshness precondition.
   // A supplied malformed token returns `INVALID_ARGUMENT`; a mismatch returns `ABORTED`.
   // Must be omitted on creation.
-  string etag = 6;
+  string etag = 3;
 
-  ResourceManagement resource_management = 7;
+  ResourceManagement resource_management = 4;
+
+  // Provides the human-readable name displayed in the UI.
+  string name = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string description = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  map<string, string> labels = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
 
   repeated Widget widgets = 8 [
     (google.api.field_behavior) = OPTIONAL
