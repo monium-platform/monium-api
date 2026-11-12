@@ -88,7 +88,21 @@ message Dashboard {
     (google.api.field_behavior) = OPTIONAL
   ];
 
+  DashboardMarketplaceSource marketplace_source = 15 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+
   ResourceAudit resource_audit = 1000 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}
+
+message DashboardMarketplaceSource {
+  string product_id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+
+  int32 product_version = 2 [
     (google.api.field_behavior) = OUTPUT_ONLY
   ];
 }
