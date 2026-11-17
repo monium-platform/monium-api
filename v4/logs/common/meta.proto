@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "MetaProto";
+option java_package = "monium.api.v4";
+
+// Contains parallel arrays of log metadata keys and values.
+message Meta {
+  repeated string keys = 1;
+  repeated MetaValue values = 2;
+}
+
+message MetaValue {
+  oneof kind {
+    string string_value = 1;
+  }
+}
