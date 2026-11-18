@@ -1,0 +1,158 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "v4/alerting/channel/resources/channel.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChannelServiceProto";
+option java_package = "monium.api.v4";
+
+service ChannelService {
+  rpc GetChannel(GetChannelRequest) returns (Channel) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/channels/{id}"
+    };
+    option (google.api.method_signature) = "project_id,id";
+  }
+
+  rpc ListChannels(ListChannelsRequest) returns (ListChannelsResponse) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/channels"
+    };
+    option (google.api.method_signature) = "project_id";
+  }
+
+  rpc CreateChannel(CreateChannelRequest) returns (Channel) {
+    option (google.api.http) = {
+      post: "/api/v4/projects/{project_id}/channels"
+      body: "channel"
+    };
+    option (google.api.method_signature) = "project_id,channel";
+  }
+
+  rpc UpdateChannel(UpdateChannelRequest) returns (Channel) {
+    option (google.api.http) = {
+      patch: "/api/v4/projects/{channel.project_id}/channels/{channel.id}"
+      body: "channel"
+    };
+    option (google.api.method_signature) = "channel,update_mask";
+  }
+
+  rpc DeleteChannel(DeleteChannelRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v4/projects/{project_id}/channels/{id}"
+    };
+    option (google.api.method_signature) = "project_id,id";
+  }
+}
+
+message GetChannelRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string id = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message ListChannelsRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The maximum number of results per page to return. If the number of
+  // available results is larger than [page_size], the service returns a
+  // [ListChannelsResponse.next_page_token] that can be used to get the next
+  // page of results in subsequent list requests.
+  int32 page_size = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Page token. To get the next page of results, set [page_token] to the
+  // [ListChannelsResponse.next_page_token] returned by a previous list request.
+  string page_token = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Orders by `name`, `name asc`, or `name desc`. Defaults to `name asc`.
+  // Use `name, type`, `name, type asc`, or `name, type desc` to order equal names by channel type.
+  // Omitted directions default to ascending. Uses ascending ID as the final tie-breaker.
+  string order_by = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Supports case-insensitive name substrings (`name =* "prod"`) and exact channel types (`type == "email"`).
+  // Joins comma-separated predicates with `AND`.
+  // Returns `INVALID_ARGUMENT` for repeated fields, unsupported fields, or unsupported operators.
+  string selector = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  google.protobuf.FieldMask read_mask = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListChannelsResponse {
+  repeated Channel channels = 1;
+
+  // This token allows you to get the next page of results for list requests. If
+  // the number of results is larger than [ListChannelsRequest.page_size], use
+  // the [next_page_token] as the value
+  // for the [ListChannelsRequest.page_token] query parameter
+  // in the next list request. Each subsequent list request will have its own
+  // [next_page_token] to continue paging through the results.
+  string next_page_token = 2;
+}
+
+message CreateChannelRequest {
+  Channel channel = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string project_id = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message UpdateChannelRequest {
+  Channel channel = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // Updates only the fields listed in the mask.
+  // If omitted or set to `*`, replaces all mutable fields.
+  // An explicitly present empty mask returns the existing resource unmodified.
+  // Selected fields may be reset to their default values.
+  google.protobuf.FieldMask update_mask = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  string comment = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message DeleteChannelRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string id = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // optional comment to delete operation
+  string comment = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string etag = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

@@ -1,0 +1,360 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "google/protobuf/duration.proto";
+import "v4/alerting/alert/enums/evaluation_status.proto";
+import "v4/alerting/alert/enums/severity.proto";
+import "v4/common/resource_audit.proto";
+import "v4/common/resource_management.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ChannelProto";
+option java_package = "monium.api.v4";
+
+message Channel {
+  // Uses the supplied ID when creating the channel.
+  // If omitted or empty on creation, the server generates an ID.
+  // Returns `ALREADY_EXISTS` if the ID is already in use within the project.
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string project_id = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Carries an opaque concurrency token. Pass it back unchanged; do not parse it as a revision.
+  // Optional on update and delete; omitted or empty imposes no client freshness precondition.
+  // A supplied malformed token returns `INVALID_ARGUMENT`; a mismatch returns `ABORTED`.
+  // Must be omitted on creation.
+  string etag = 3;
+
+  ResourceManagement resource_management = 4;
+
+  string name = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string description = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Resource labels as `key:value` pairs.
+  map<string, string> labels = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Send event only about specified alert evaluation status.
+  repeated EvaluationStatus notify_about_statuses = 8 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Repeat notification period in seconds. Zero means no repeating.
+  google.protobuf.Duration repeat_period = 9 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  oneof type {
+    EmailChannel email = 10 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    JugglerChannel juggler = 11 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    WebhookChannel webhook = 12 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    SmsChannel sms = 13 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    TelegramChannel telegram = 14 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    YandexMessengerChannel yandex_messenger = 15 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    CloudEmailChannel cloud_email = 16 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    CloudSmsChannel cloud_sms = 17 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    CloudMobilePushChannel cloud_mobile_push = 18 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    DatalensEmailChannel datalens_email = 19 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    SlackChannel slack = 20 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    CloudTelegramChannel cloud_telegram = 21 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    CloudFunctionChannel cloud_function = 22 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    CloudYandexMessengerChannel cloud_yandex_messenger = 23 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    PhoneChannel phone = 24 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  // Identifies the configuration revision in the resource revision history.
+  // Use `etag` for freshness checks on update and delete.
+  // Do not derive an `etag` from this value.
+  int32 version = 25 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+
+  bool default_for_project = 26 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated Severity default_for_alert_severity = 27 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  ResourceAudit resource_audit = 1000 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}
+
+message AbcRecipient {
+  string abc = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string role_scope = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message CloudEmailChannel {
+  repeated string recipients = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message CloudFunctionChannel {
+  string id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // User's service account ID to manage function
+  string service_account = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Internal options data
+  CloudFunctionChannelFunctionChannelOptions options = 3 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}
+
+message CloudMobilePushChannel {
+  repeated string recipients = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message CloudSmsChannel {
+  repeated string recipients = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message CloudTelegramChannel {
+  repeated string recipients = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool send_screenshot = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message CloudYandexMessengerChannel {
+  repeated string recipients = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool send_screenshot = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message DatalensEmailChannel {
+  repeated string recipients = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message EmailChannel {
+  string subject_template = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string content_template = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated string recipients = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated AbcRecipient abc_recipients = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message JugglerChannel {
+  string host = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string service = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string description = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  repeated string tags = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string instance = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message PhoneChannel {
+  oneof receiver {
+    PhoneChannelDuty duty = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    string login = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message SlackChannel {
+  string chat_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message SmsChannel {
+  oneof type {
+    string login = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    string phone = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  string text_template = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message TelegramChannel {
+  oneof type {
+    string login = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    string group_title = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  string text_template = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool send_screenshot = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message WebhookChannel {
+  string url = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string body_template = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  map<string, string> headers = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message YandexMessengerChannel {
+  oneof type {
+    string login = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    string group_id = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  string text_template = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  bool send_screenshot = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message CloudFunctionChannelFunctionChannelOptions {
+  // Cloud ID of SA
+  string cloud_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Subject ID (User or SA) who delegates SA to impersonate in
+  string subject_id = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message PhoneChannelDuty {
+  string abc_service = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string duty_slug = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

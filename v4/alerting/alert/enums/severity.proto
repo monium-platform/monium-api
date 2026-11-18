@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "SeverityProto";
+option java_package = "monium.api.v4";
+
+enum Severity {
+  SEVERITY_UNSPECIFIED = 0;
+
+  SEVERITY_DISASTER = 1;
+
+  SEVERITY_CRITICAL = 2;
+
+  SEVERITY_INFO = 3;
+}
