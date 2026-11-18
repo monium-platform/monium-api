@@ -21,8 +21,6 @@ option java_outer_classname = "DashboardProto";
 option java_package = "monium.api.v4";
 
 message Dashboard {
-  reserved "slug";
-
   // Identifies the dashboard with an immutable stable ID. Update requires this field regardless of the update
   // mask. On creation, an empty value requests a server-generated ID; caller-chosen IDs follow
   // [CreateDashboardRequest][].
@@ -90,6 +88,14 @@ message Dashboard {
 
   DashboardMarketplaceSource marketplace_source = 15 [
     (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Exposes the numeric revision of this dashboard state for interoperability with
+  // RevisionService snapshot lookup and rollback.
+  // Use `etag` for conditional updates and deletes through DashboardService v4.
+  // Do not derive `etag` from this value or derive this value from `etag`.
+  int32 version = 16 [
+    (google.api.field_behavior) = OUTPUT_ONLY
   ];
 
   ResourceAudit resource_audit = 1000 [
