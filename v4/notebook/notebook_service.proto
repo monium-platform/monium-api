@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package monium.api.v4;
 
+import "annotations/experimental.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
@@ -15,6 +16,8 @@ option java_outer_classname = "NotebookServiceProto";
 option java_package = "monium.api.v4";
 
 service NotebookService {
+  option (monium.api.service_experimental) = true;
+
   rpc GetNotebook(GetNotebookRequest) returns (Notebook) {
     option (google.api.http) = {
       get: "/api/v4/projects/{project_id}/notebooks/{id}"

@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package monium.api.v4;
 
+import "annotations/experimental.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
@@ -13,6 +14,8 @@ option java_outer_classname = "OperationServiceProto";
 option java_package = "monium.api.v4";
 
 service OperationService {
+  option (monium.api.service_experimental) = true;
+
   rpc GetOperationLongRunning(GetOperationLongRunningRequest) returns (Operation) {
     option (google.api.http) = {
       get: "/api/v4/operations/{id}"

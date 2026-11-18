@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package monium.api.v4;
 
+import "annotations/experimental.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
@@ -15,6 +16,8 @@ option java_outer_classname = "ChannelServiceProto";
 option java_package = "monium.api.v4";
 
 service ChannelService {
+  option (monium.api.service_experimental) = true;
+
   rpc GetChannel(GetChannelRequest) returns (Channel) {
     option (google.api.http) = {
       get: "/api/v4/projects/{project_id}/channels/{id}"

@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package monium.api.v4;
 
+import "annotations/experimental.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
@@ -16,6 +17,8 @@ option java_package = "monium.api.v4";
 
 // Manages persisted dashboards.
 service DashboardService {
+  option (monium.api.service_experimental) = true;
+
   // Returns a dashboard by its project and stable ID.
   rpc GetDashboard(GetDashboardRequest) returns (Dashboard) {
     option (google.api.http) = {
