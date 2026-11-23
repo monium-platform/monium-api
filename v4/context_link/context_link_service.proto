@@ -1,0 +1,179 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "v4/context_link/resources/context_link.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ContextLinkServiceProto";
+option java_package = "monium.api.v4";
+
+service ContextLinkService {
+  rpc GetContextLink(GetContextLinkRequest) returns (ContextLink) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/contextLinks/{id}"
+    };
+    option (google.api.method_signature) = "project_id,id";
+  }
+
+  rpc ListContextLinks(ListContextLinksRequest) returns (ListContextLinksResponse) {
+    option (google.api.http) = {
+      get: "/api/v4/projects/{project_id}/contextLinks"
+    };
+    option (google.api.method_signature) = "project_id";
+  }
+
+  rpc CreateContextLink(CreateContextLinkRequest) returns (ContextLink) {
+    option (google.api.http) = {
+      post: "/api/v4/projects/{project_id}/contextLinks"
+      body: "context_link"
+    };
+    option (google.api.method_signature) = "project_id,context_link";
+  }
+
+  rpc UpdateContextLink(UpdateContextLinkRequest) returns (ContextLink) {
+    option (google.api.http) = {
+      patch: "/api/v4/projects/{context_link.project_id}/contextLinks/{context_link.id}"
+      body: "context_link"
+    };
+    option (google.api.method_signature) = "context_link,update_mask";
+  }
+
+  rpc DeleteContextLink(DeleteContextLinkRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v4/projects/{project_id}/contextLinks/{id}"
+    };
+    option (google.api.method_signature) = "project_id,id";
+  }
+
+  rpc GenerateContextLinks(GenerateContextLinksRequest) returns (GenerateContextLinksResponse) {
+    option (google.api.http) = {
+      post: "/api/v4/projects/{project_id}/contextLinks:generateContextLinks"
+      body: "*"
+    };
+  }
+}
+
+message GetContextLinkRequest {
+  string id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string project_id = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message ListContextLinksRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  int32 page_size = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Uses `next_page_token` from the previous response; empty selects the first page.
+  string page_token = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string selector = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  google.protobuf.FieldMask read_mask = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ListContextLinksResponse {
+  repeated ContextLink context_links = 1;
+
+  // Is empty when there are no more context links to return.
+  string next_page_token = 2;
+}
+
+message CreateContextLinkRequest {
+  // Uses the request's `project_id`; omit `context_link.project_id`.
+  ContextLink context_link = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  string project_id = 2 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message UpdateContextLinkRequest {
+  // Requires `id`, `project_id`, and `etag` to identify the link and its expected state.
+  ContextLink context_link = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Replaces all mutable fields when omitted or set to `*`.
+  // Updates only the selected fields when nonempty, including resetting them to default values.
+  // Returns the existing link without writing when explicitly empty; access and `etag` checks still apply.
+  google.protobuf.FieldMask update_mask = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message DeleteContextLinkRequest {
+  string id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Skips the client freshness check when empty; otherwise checks the token atomically with deletion.
+  string etag = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string project_id = 3 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+message GenerateContextLinksRequest {
+  string project_id = 1 [
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Supplies labels shared by all source label sets.
+  map<string, string> common_labels = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Supplies one interpolation context per source, such as a chart line.
+  repeated ContextLinkGenerationContext contexts = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Supplies the time range start for `{{__from}}` interpolation.
+  google.protobuf.Timestamp from_time = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Supplies the time range end for `{{__to}}` interpolation.
+  google.protobuf.Timestamp to_time = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Uses the project's stored links when empty; otherwise uses these candidates to preview links before creation.
+  // Does not cache results when candidates are supplied.
+  repeated ContextLink candidate_links = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message GenerateContextLinksResponse {
+  // Returns one group per source label set, in the same order as `GenerateContextLinksRequest.contexts`.
+  repeated ContextLinkGenerationResult context_links = 1;
+}

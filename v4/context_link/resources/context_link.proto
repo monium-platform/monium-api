@@ -1,0 +1,155 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+import "v4/common/resource_audit.proto";
+import "v4/common/resource_management.proto";
+import "v4/dashboard/resources/chart_widget.proto";
+import "v4/dashboard/resources/multi_source_chart_widget.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "ContextLinkProto";
+option java_package = "monium.api.v4";
+
+message ContextLink {
+  string id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+
+  string project_id = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Provides an opaque concurrency token; required when updating the link.
+  string etag = 3;
+
+  ResourceManagement resource_management = 4;
+
+  // Supports `{{expression}}` interpolation and whitespace; must be unique within the project.
+  string name = 5 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Defaults to `false`.
+  bool hidden = 6 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Displays the link when the selector matches the source labels.
+  string selector = 7 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  oneof target {
+    DashboardContextLink dashboard = 8 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    UrlContextLink url = 9 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    MetricExplorerContextLink metric_explorer = 10 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+
+  ResourceAudit resource_audit = 1000 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}
+
+message DashboardContextLink {
+  string project_id = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  string dashboard_id = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Passes values to dashboard parameters; values support `{{expression}}` interpolation.
+  map<string, string> dashboard_parameters = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Supplies the dashboard name displayed in the UI.
+  string dashboard_name = 4 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message UrlContextLink {
+  // Supports `{{expression}}` interpolation in the URL.
+  string url = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message MetricExplorerContextLink {
+  oneof metric_explorer_chart {
+    // Opens the chart in Metric Explorer; queries support `{{expression}}` interpolation.
+    ChartWidget chart = 1 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+
+    // Opens the multi-source chart in Metric Explorer; queries support `{{expression}}` interpolation.
+    MultiSourceChartWidget multi_source_chart = 2 [
+      (google.api.field_behavior) = OPTIONAL
+    ];
+  }
+}
+
+message InterpolatedContextLink {
+  // Contains the link name with all expressions replaced by values.
+  string name = 1;
+
+  oneof target {
+    InterpolatedDashboardContextLink dashboard = 2;
+
+    InterpolatedUrlContextLink url = 3;
+
+    InterpolatedMetricExplorerContextLink metric_explorer = 4;
+  }
+}
+
+message InterpolatedDashboardContextLink {
+  string project_id = 1;
+
+  string dashboard_id = 2;
+
+  // Passes interpolated values to dashboard parameters.
+  map<string, string> dashboard_parameters = 3;
+
+  // Supplies the dashboard name displayed in the UI.
+  string dashboard_name = 4;
+}
+
+message InterpolatedUrlContextLink {
+  // Contains the URL with all expressions replaced by values.
+  string url = 1;
+}
+
+message InterpolatedMetricExplorerContextLink {
+  oneof metric_explorer_chart {
+    // Contains interpolated queries with additional source labels.
+    ChartWidget chart = 1;
+
+    // Contains interpolated queries with additional source labels.
+    MultiSourceChartWidget multi_source_chart = 2;
+  }
+}
+
+// Supplies concrete label values for selector matching and template interpolation.
+// Represents one source, such as a chart line; does not contain selector expressions.
+message ContextLinkGenerationContext {
+  map<string, string> labels = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+message ContextLinkGenerationResult {
+  repeated InterpolatedContextLink links = 1;
+}

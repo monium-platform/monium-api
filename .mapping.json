@@ -14,6 +14,8 @@
   "v4/common/labels.proto":"monium/api/v4/common/labels.proto",
   "v4/common/resource_audit.proto":"monium/api/v4/common/resource_audit.proto",
   "v4/common/resource_management.proto":"monium/api/v4/common/resource_management.proto",
+  "v4/context_link/context_link_service.proto":"monium/api/v4/context_link/context_link_service.proto",
+  "v4/context_link/resources/context_link.proto":"monium/api/v4/context_link/resources/context_link.proto",
   "v4/dashboard/dashboard_service.proto":"monium/api/v4/dashboard/dashboard_service.proto",
   "v4/dashboard/enums/bar_chart_aggregation.proto":"monium/api/v4/dashboard/enums/bar_chart_aggregation.proto",
   "v4/dashboard/enums/bar_chart_label_spacing.proto":"monium/api/v4/dashboard/enums/bar_chart_label_spacing.proto",
