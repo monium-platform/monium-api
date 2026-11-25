@@ -98,6 +98,14 @@ message Dashboard {
     (google.api.field_behavior) = OUTPUT_ONLY
   ];
 
+  // Specifies the title of the preset from `preset_items` applied when the dashboard is opened.
+  // An empty value means that the dashboard has no default preset.
+  // The value must match the title of a preset in `preset_items`: a request that renames or removes that preset
+  // updates this field too. If several presets share the title, the first one applies.
+  string default_preset_title = 17 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
   ResourceAudit resource_audit = 1000 [
     (google.api.field_behavior) = OUTPUT_ONLY
   ];
