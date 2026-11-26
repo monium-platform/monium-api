@@ -19,8 +19,10 @@ import "v4/dashboard/enums/chart_visualization_type.proto";
 import "v4/dashboard/enums/chart_y_axis_position.proto";
 import "v4/dashboard/enums/chart_y_axis_type.proto";
 import "v4/dashboard/enums/fill.proto";
+import "v4/dashboard/enums/table_cell_display_mode.proto";
 import "v4/dashboard/resources/bar_chart_settings.proto";
 import "v4/dashboard/resources/table_settings.proto";
+import "v4/dashboard/resources/thresholds.proto";
 
 option go_package = "github.com/monium/api/v4";
 option java_multiple_files = true;
@@ -354,6 +356,24 @@ message ChartSeriesOverrideSettings {
   UnitFormat unit_format = 18 [
     (google.api.field_behavior) = OPTIONAL
   ];
+
+  // Overrides the series color scheme, or the color scheme of the column cells when matched by
+  // [ChartColumnMatcher][]. Omission preserves the widget setting.
+  ChartColorSchemeSettings color_scheme_settings = 19 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Overrides the thresholds of the series color scheme, or of the column cells when matched by
+  // [ChartColumnMatcher][]. Omission preserves the widget thresholds.
+  Thresholds thresholds = 20 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Overrides how the cells of a column matched by [ChartColumnMatcher][] show their values.
+  // Preserves the widget setting when unspecified.
+  TableCellDisplayMode cell_display_mode = 21 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
 }
 
 message ChartOverrideMatcher {
@@ -404,8 +424,8 @@ message ChartValueMatcher {
   ];
 }
 
-// Selects table columns. Only `name` and `unit_format` override settings apply,
-// changing the column title and unit respectively.
+// Selects table columns. Only `name`, `unit_format`, `color_scheme_settings`, `thresholds` and
+// `cell_display_mode` override settings apply, changing the column title, unit and cell coloring.
 message ChartColumnMatcher {
   repeated TableColumnRef columns = 1 [
     (google.api.field_behavior) = OPTIONAL
