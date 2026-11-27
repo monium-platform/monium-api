@@ -6,6 +6,7 @@ import "google/api/field_behavior.proto";
 import "v4/common/infra_event_sources.proto";
 import "v4/common/resource_audit.proto";
 import "v4/common/resource_management.proto";
+import public "v4/dashboard/resources/annotations_settings.proto";
 import public "v4/dashboard/resources/bar_chart_settings.proto";
 import public "v4/dashboard/resources/chart_widget.proto";
 import public "v4/dashboard/resources/dashboard_parameters.proto";
@@ -103,6 +104,12 @@ message Dashboard {
   // The value must match the title of a preset in `preset_items`: a request that renames or removes that preset
   // updates this field too. If several presets share the title, the first one applies.
   string default_preset_title = 17 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // Configures the initial visibility of annotations on charts.
+  // If omitted, the client default applies.
+  AnnotationsSettings annotations_settings = 18 [
     (google.api.field_behavior) = OPTIONAL
   ];
 

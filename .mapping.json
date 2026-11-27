@@ -47,6 +47,7 @@
   "v4/dashboard/enums/table_cell_display_mode.proto":"monium/api/v4/dashboard/enums/table_cell_display_mode.proto",
   "v4/dashboard/enums/thresholds_show_mode.proto":"monium/api/v4/dashboard/enums/thresholds_show_mode.proto",
   "v4/dashboard/enums/widget_title_size.proto":"monium/api/v4/dashboard/enums/widget_title_size.proto",
+  "v4/dashboard/resources/annotations_settings.proto":"monium/api/v4/dashboard/resources/annotations_settings.proto",
   "v4/dashboard/resources/bar_chart_settings.proto":"monium/api/v4/dashboard/resources/bar_chart_settings.proto",
   "v4/dashboard/resources/chart_settings.proto":"monium/api/v4/dashboard/resources/chart_settings.proto",
   "v4/dashboard/resources/chart_widget.proto":"monium/api/v4/dashboard/resources/chart_widget.proto",

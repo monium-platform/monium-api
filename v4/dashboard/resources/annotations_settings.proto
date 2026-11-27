@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package monium.api.v4;
+
+import "google/api/field_behavior.proto";
+
+option go_package = "github.com/monium/api/v4";
+option java_multiple_files = true;
+option java_outer_classname = "AnnotationsSettingsProto";
+option java_package = "monium.api.v4";
+
+// Configures the initial visibility of annotations on charts.
+message AnnotationsSettings {
+  // Specifies whether annotation lines and ranges are visible when the dashboard is opened.
+  // Defaults to `false` when omitted.
+  bool visible = 1 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
